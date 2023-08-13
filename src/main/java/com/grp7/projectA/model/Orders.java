@@ -1,28 +1,36 @@
 package com.grp7.projectA.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue
     private long id;
     @Column
     private String supplier;
+
     @Column
     private String product;
+
+//    @Column
+//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+//    private List<Product> product = new ArrayList<>();
+
+//    @Column
+//    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+//    private List<LineItem> lineItems;
+
     @Column
     private int quantity;
 
-    public Order() {
+    public Orders() {
 
     }
-    public Order(String supplier, int quantity) {
+    public Orders(String supplier, String product, int quantity) {
         this.supplier = supplier;
+        this.product = product;
         this.quantity = quantity;
     }
 
@@ -50,9 +58,7 @@ public class Order {
         this.product = product;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
+    public int getQuantity() { return quantity; }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;

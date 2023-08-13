@@ -3,6 +3,7 @@ package com.grp7.projectA.controller;
 import com.grp7.projectA.model.Customer;
 import com.grp7.projectA.repository.ContactRepository;
 import com.grp7.projectA.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class CustomerController {
     private final CustomerRepository customerRepository;
     private final ContactRepository contactRepository;
 
+    @Autowired
     CustomerController(CustomerRepository customerRepository, ContactRepository contactRepository) {
         this.customerRepository = customerRepository;
         this.contactRepository = contactRepository;
@@ -23,10 +25,7 @@ public class CustomerController {
     List<Customer> all() { return customerRepository.findAll(); }
 
     @GetMapping("/{customer_id}")
-    Customer findCustomerById(@PathVariable long customer_id) {
-        return customerRepository.findById(customer_id)
-                .orElseThrow(RuntimeException::new);
-    }
+    Customer findCustomerById(@PathVariable long customer_id) { return customerRepository.findById(customer_id).orElseThrow(RuntimeException::new); }
 
     @PostMapping()
     Customer createCustomer(@RequestBody Customer newCustomer) { return customerRepository.save(newCustomer); }
@@ -35,6 +34,7 @@ public class CustomerController {
     Customer updateCustomer(@PathVariable Long customer_id, @RequestBody Customer customer) {
         Customer updatedCustomer = customerRepository.findById(customer_id)
                 .orElseThrow(RuntimeException::new);
+
         updatedCustomer.setId(customer_id);
         updatedCustomer.setCompanyName(customer.getCompanyName());
         updatedCustomer.setAddress(customer.getAddress());

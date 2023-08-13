@@ -8,13 +8,13 @@ import javax.persistence.*;
 public class ProductDetail {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue
     private long id;
     @Column
     private String description;
     @Column
     private String comment;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     @JsonIgnore
     private Product product;

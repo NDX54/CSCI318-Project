@@ -1,5 +1,7 @@
 package com.grp7.projectA.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,9 +10,9 @@ public class Product {
     @Id
     @GeneratedValue
     private long id;
-    @Column
+    @Column(nullable = false)
     private String productCategory;
-    @Column
+    @Column(nullable = false)
     private String name;
     @Column
     private double price;

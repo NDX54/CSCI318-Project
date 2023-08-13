@@ -4,6 +4,7 @@ import com.grp7.projectA.model.Product;
 import com.grp7.projectA.model.ProductDetail;
 import com.grp7.projectA.repository.ProductDetailRepository;
 import com.grp7.projectA.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final ProductDetailRepository productDetailRepository;
 
+    @Autowired
     ProductController(ProductRepository productRepository, ProductDetailRepository productDetailRepository) {
         this.productRepository = productRepository;
         this.productDetailRepository = productDetailRepository;
@@ -33,6 +35,18 @@ public class ProductController {
 
     @PostMapping()
     Product createProduct(@RequestBody Product newProduct) { return productRepository.save(newProduct); }
+
+    @PutMapping("/{product_id}")
+    Product updateProduct(@PathVariable Long product_id,@RequestBody Product product) {
+        Product updatedProduct = productRepository.findById(product_id).orElseThrow(RuntimeException::new);
+
+        updatedProduct.setId(product_id);
+        updatedProduct.setProductCategory(product.getProductCategory());
+        updatedProduct.setName(product.getName());
+        updatedProduct.setPrice(product.getPrice());
+        updatedProduct.setProductDetail(product.getProductDetail());
+        return productRepository.save(updatedProduct);
+    }
 
     @DeleteMapping("/{product_id}")
     void deleteProduct(@PathVariable Long product_id) { productRepository.deleteById(product_id); }
