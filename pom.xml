@@ -9,11 +9,17 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.grp7</groupId>
-	<artifactId>projectA</artifactId>
+	<artifactId>projectB</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>projectA</name>
+    <packaging>pom</packaging>
+    <name>projectA</name>
 	<description>CSCI318 Project A</description>
-	<properties>
+    <modules>
+        <module>customer-service</module>
+		<module>product-service</module>
+		<module>order-service</module>
+	</modules>
+    <properties>
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
