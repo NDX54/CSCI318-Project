@@ -1,6 +1,6 @@
 package com.grp7.projectB.repository;
 
-import com.grp7.projectB.domain.model.valueObjects.Product;
+import com.grp7.projectB.domain.model.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,6 +1,6 @@
-package com.grp7.projectB.domain.model.valueObjects;
+package com.grp7.projectB.domain.model.entities;
 
-import com.grp7.projectB.domain.model.ProductDetail;
+import com.grp7.projectB.domain.model.valueObjects.ProductDetail;
 
 import javax.persistence.*;
 
@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Product {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(nullable = false)
     private String productCategory;

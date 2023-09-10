@@ -1,6 +1,6 @@
 package com.grp7.projectB.controller;
 
-import com.grp7.projectB.domain.model.valueObjects.Product;
+import com.grp7.projectB.domain.model.entities.Product;
 import com.grp7.projectB.repository.ProductDetailRepository;
 import com.grp7.projectB.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.grp7.projectB.domain.model;
+package com.grp7.projectB.domain.model.valueObjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.grp7.projectB.domain.model.valueObjects.Product;
+import com.grp7.projectB.domain.model.entities.Product;
 
 import javax.persistence.*;
 

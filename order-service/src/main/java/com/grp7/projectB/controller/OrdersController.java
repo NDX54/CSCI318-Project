@@ -34,8 +34,9 @@ public class OrdersController {
         Order updatedOrder = ordersRepository.findById(order_id).orElseThrow(RuntimeException::new);
 
         updatedOrder.setId(order_id);
+//        updatedOrder.setOrderId(order_id);
         updatedOrder.setSupplier(order.getSupplier());
-        updatedOrder.setProduct(order.getProduct());
+//        updatedOrder.setProduct(order.getProduct());
         updatedOrder.setQuantity(order.getQuantity());
 
         return ordersRepository.save(updatedOrder);

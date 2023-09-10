@@ -1,11 +1,11 @@
 package com.grp7.projectB.domain.model.aggregates;
 
-import javax.persistence.*;
-
 import com.grp7.projectB.domain.model.entities.Supplier;
-import com.grp7.projectB.domain.model.valueObjects.Product;
+import com.grp7.projectB.domain.model.entities.Product;
 import com.grp7.projectB.domain.model.valueObjects.Quantity;
 import org.springframework.data.domain.AbstractAggregateRoot;
+
+import javax.persistence.*;
 
 @Entity
 public class Order extends AbstractAggregateRoot<Order> {
@@ -19,8 +19,8 @@ public class Order extends AbstractAggregateRoot<Order> {
     @Embedded
     private Supplier supplier;
 
-    @Embedded
-    private Product product;
+//    @Embedded
+//    private Product product;
 
 //    @Column
 //    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -31,14 +31,15 @@ public class Order extends AbstractAggregateRoot<Order> {
 //    private List<LineItem> lineItems;
 
     @Embedded
-    private Quantity quantity;
+    private int quantity;
 
     public Order() {
 
     }
-    public Order(Supplier supplier, Product product, Quantity quantity) {
+    public Order(Supplier supplier, Product product, int quantity) {
+
         this.supplier = supplier;
-        this.product = product;
+//        this.product = product;
         this.quantity = quantity;
     }
 
@@ -50,6 +51,10 @@ public class Order extends AbstractAggregateRoot<Order> {
         this.id = id;
     }
 
+    public OrderId getOrderId() { return orderId; }
+
+    public void setOrderId(OrderId orderId) { this.orderId = orderId; }
+
     public Supplier getSupplier() {
         return supplier;
     }
@@ -58,17 +63,17 @@ public class Order extends AbstractAggregateRoot<Order> {
         this.supplier = supplier;
     }
 
-    public Product getProduct() {
-        return product;
-    }
+//    public Product getProduct() {
+//        return product;
+//    }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+//    public void setProduct(Product product) {
+//        this.product = product;
+//    }
 
-    public Quantity getQuantity() { return quantity; }
+    public int getQuantity() { return quantity; }
 
-    public void setQuantity(Quantity quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }

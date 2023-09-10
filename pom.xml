@@ -17,8 +17,8 @@
     <modules>
         <module>customer-service</module>
 		<module>product-service</module>
-		<module>order-service</module>
-	</modules>
+        <module>order-service</module>
+    </modules>
     <properties>
 		<java.version>11</java.version>
 	</properties>
