@@ -11,9 +11,15 @@
 	<groupId>com.grp7</groupId>
 	<artifactId>projectA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>projectA</name>
+    <packaging>pom</packaging>
+    <name>projectA</name>
 	<description>CSCI318 Project A</description>
-	<properties>
+    <modules>
+        <module>product-service</module>
+		<module>order-service</module>
+		<module>customer-service</module>
+	</modules>
+    <properties>
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
