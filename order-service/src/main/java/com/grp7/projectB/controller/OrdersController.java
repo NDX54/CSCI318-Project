@@ -1,6 +1,6 @@
 package com.grp7.projectB.controller;
 
-import com.grp7.projectB.model.Orders;
+import com.grp7.projectB.model.entities.Orders;
 import com.grp7.projectB.repository.OrdersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

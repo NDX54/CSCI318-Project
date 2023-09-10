@@ -1,4 +1,4 @@
-package com.grp7.projectB.model;
+package com.grp7.projectB.model.entities;
 
 import javax.persistence.*;
 
