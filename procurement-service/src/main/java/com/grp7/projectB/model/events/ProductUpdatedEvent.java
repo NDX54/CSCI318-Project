@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class ProductCreatedEvent {
+public class ProductUpdatedEvent {
 
     @Id
     @GeneratedValue
@@ -32,9 +32,9 @@ public class ProductCreatedEvent {
     @Column
     private ProductId productId;
 
-    public ProductCreatedEvent() {}
+    public ProductUpdatedEvent() {}
 
-    public ProductCreatedEvent(String eventName) { this.eventName = eventName; }
+    public ProductUpdatedEvent(String eventName) { this.eventName = eventName; }
 
     public long getId() { return id; }
 

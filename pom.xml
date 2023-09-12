@@ -15,7 +15,7 @@
     <name>projectA</name>
 	<description>CSCI318 Project A</description>
     <modules>
-        <module>product-service</module>
+        <module>procurement-service</module>
 		<module>order-service</module>
 		<module>customer-service</module>
 	</modules>

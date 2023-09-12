@@ -18,4 +18,7 @@ public class ProductId implements Serializable {
     public String getProductId() { return this.productId; }
 
     public void setProductId(String productId) { this.productId = productId; }
+
+    @Override
+    public String toString() { return productId; }
 }
