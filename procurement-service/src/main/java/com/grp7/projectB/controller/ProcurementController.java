@@ -4,9 +4,12 @@ package com.grp7.projectB.controller;
 import com.grp7.projectB.controller.dto.ProductDTO;
 import com.grp7.projectB.model.aggregates.ProductAggregate;
 import com.grp7.projectB.model.aggregates.ProductId;
+import com.grp7.projectB.repository.ProductRepository;
 import com.grp7.projectB.service.ProductService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,9 +27,7 @@ public class ProcurementController {
     void create(@RequestBody ProductAggregate newProductAggregate) { productService.createProduct(newProductAggregate); }
 
     @PutMapping("/{productId}")
-    void update(@PathVariable ProductId productId, @RequestBody ProductAggregate productAggregate) {
-        productService.updateProduct(productId, productAggregate);
-    }
+    void update(@PathVariable ProductId productId, @RequestBody ProductAggregate productAggregate) { productService.updateProduct(productId, productAggregate); }
 
     @GetMapping
     List<ProductDTO> allProducts() {

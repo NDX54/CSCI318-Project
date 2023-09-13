@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Comment {
 
-    @Column(name = "comment", unique = false, updatable = false)
+    @Column(name = "comment", unique = false, updatable = true)
     private String comment;
 
     public Comment() {}

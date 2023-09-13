@@ -6,7 +6,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Price {
 
-    @Column(name = "price", unique = false, updatable = false)
+    @Column(name = "price", unique = false, updatable = true)
     private Double price;
 
     public Price() {}

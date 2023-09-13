@@ -3,15 +3,16 @@ package com.grp7.projectB.service;
 
 import com.grp7.projectB.model.aggregates.ProductAggregate;
 import com.grp7.projectB.model.aggregates.ProductId;
-import com.grp7.projectB.model.events.ProductCreatedEvent;
+import com.grp7.projectB.model.events.ProductEvent;
 import com.grp7.projectB.repository.ProductEventRepository;
 import com.grp7.projectB.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,11 +36,11 @@ public class ProductService {
 
     public List<ProductAggregate> getAllProducts() { return productRepository.findAll(); }
 
-    public ProductAggregate getProduct(String productId) { return productRepository.findById(productId).orElseThrow(RuntimeException::new); }
+    public ProductAggregate getProduct(String productId) { return productRepository.findById(productId).orElseThrow(EntityNotFoundException::new); }
 
-    public ProductAggregate getProduct(ProductId productId) { return productRepository.findByProductId(productId).orElseThrow(RuntimeException::new); }
+    public ProductAggregate getProduct(ProductId productId) { return productRepository.findByProductId(productId).orElseThrow(EntityNotFoundException::new); }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createProduct(ProductAggregate newProductAggregate) {
 
         String random = UUID.randomUUID().toString().toUpperCase();
@@ -49,27 +50,43 @@ public class ProductService {
         productRepository.save(newProductAggregate);
 
 
-        ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
+        ProductEvent productEvent = new ProductEvent();
 
-        productCreatedEvent.setEventName("Create");
-        productCreatedEvent.setProductId(new ProductId(productIdStr));
-        productCreatedEvent.setProductCategory(newProductAggregate.getProductCategory());
-        productCreatedEvent.setProductName(newProductAggregate.getName());
-        productCreatedEvent.setProductPrice(newProductAggregate.getPrice());
+        productEvent.setEventName("Create");
+        productEvent.setProductId(new ProductId(productIdStr));
+        productEvent.setProductCategory(newProductAggregate.getProductCategory());
+        productEvent.setProductName(newProductAggregate.getName());
+        productEvent.setProductPrice(newProductAggregate.getPrice());
+        productEvent.setDescription(newProductAggregate.getDescription());
+        productEvent.setComment(newProductAggregate.getComment());
 
-        applicationEventPublisher.publishEvent(productCreatedEvent);
+        applicationEventPublisher.publishEvent(productEvent);
 
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public void updateProduct(ProductId productId, ProductAggregate productAggregate) {
-        ProductAggregate existingProductAggregate = productRepository.findByProductId(productId).orElseThrow(RuntimeException::new);
-        existingProductAggregate.setProductId(productId);
+        ProductAggregate existingProductAggregate = productRepository.findByProductId(productId).orElseThrow(EntityNotFoundException::new);
         existingProductAggregate.setProductCategory(productAggregate.getProductCategory());
         existingProductAggregate.setName(productAggregate.getName());
         existingProductAggregate.setPrice(productAggregate.getPrice());
+        existingProductAggregate.setDescription(productAggregate.getDescription());
+        existingProductAggregate.setComment(productAggregate.getComment());
+
 
         productRepository.save(existingProductAggregate);
+
+        ProductEvent productEvent = new ProductEvent();
+
+        productEvent.setEventName("Update");
+        productEvent.setProductId(productId);
+        productEvent.setProductCategory(productAggregate.getProductCategory());
+        productEvent.setProductName(productAggregate.getName());
+        productEvent.setProductPrice(productAggregate.getPrice());
+        productEvent.setDescription(productAggregate.getDescription());
+        productEvent.setComment(productAggregate.getComment());
+
+        applicationEventPublisher.publishEvent(productEvent);
     }
 
 }

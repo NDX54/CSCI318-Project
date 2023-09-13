@@ -1,9 +1,7 @@
 package com.grp7.projectB.model.events;
 
 import com.grp7.projectB.model.aggregates.ProductId;
-import com.grp7.projectB.model.valueobjects.Name;
-import com.grp7.projectB.model.valueobjects.Price;
-import com.grp7.projectB.model.valueobjects.ProductCategory;
+import com.grp7.projectB.model.valueobjects.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class ProductUpdatedEvent {
+public class ProductEvent {
 
     @Id
     @GeneratedValue
@@ -30,11 +28,19 @@ public class ProductUpdatedEvent {
     private ProductCategory productCategory;
 
     @Column
+    private Description description;
+
+    @Column
+    private Comment comment;
+
+    @Column
     private ProductId productId;
 
-    public ProductUpdatedEvent() {}
 
-    public ProductUpdatedEvent(String eventName) { this.eventName = eventName; }
+
+    public ProductEvent() {}
+
+    public ProductEvent(String eventName) { this.eventName = eventName; }
 
     public long getId() { return id; }
 
@@ -56,6 +62,14 @@ public class ProductUpdatedEvent {
 
     public void setProductCategory(ProductCategory productCategory) { this.productCategory = productCategory; }
 
+    public Description getDescription() { return description; }
+
+    public void setDescription(Description description) { this.description = description; }
+
+    public Comment getComment() { return comment; }
+
+    public void setComment(Comment comment) { this.comment = comment; }
+
     public ProductId getProductId() { return productId; }
 
     public void setProductId(ProductId productId) { this.productId = productId; }
@@ -67,6 +81,8 @@ public class ProductUpdatedEvent {
                 ", product_category='" + productCategory.toString() + '\'' +
                 ", name='" + productName.toString() + '\'' +
                 ", price='" + productPrice.toString() + '\'' +
+                ", description='" + description.toString() + '\'' +
+                ", comment='" + comment.toString() + '\'' +
                 ", product_id='" + productId.toString() + '\'' +
                 '}';
     }

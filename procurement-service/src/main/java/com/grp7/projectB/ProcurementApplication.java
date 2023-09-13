@@ -2,10 +2,8 @@ package com.grp7.projectB;
 
 import com.grp7.projectB.model.aggregates.ProductAggregate;
 import com.grp7.projectB.model.aggregates.ProductId;
-import com.grp7.projectB.model.events.ProductCreatedEvent;
-import com.grp7.projectB.model.valueobjects.Name;
-import com.grp7.projectB.model.valueobjects.Price;
-import com.grp7.projectB.model.valueobjects.ProductCategory;
+import com.grp7.projectB.model.events.ProductEvent;
+import com.grp7.projectB.model.valueobjects.*;
 import com.grp7.projectB.repository.ProductEventRepository;
 import com.grp7.projectB.repository.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -15,8 +13,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -44,32 +40,40 @@ public class ProcurementApplication {
 			prod1.setProductCategory(new ProductCategory("Drinks"));
 			prod1.setName(new Name("Up & Go! Chocolate Flavour"));
 			prod1.setPrice(new Price(6.99));
+			prod1.setDescription(new Description("Choco drink."));
+			prod1.setComment(new Comment("Yum!"));
 			productRepository.save(prod1);
 
-			ProductCreatedEvent productCreatedEvent1 = new ProductCreatedEvent();
-			productCreatedEvent1.setEventName("Create");
-			productCreatedEvent1.setProductId(new ProductId(productIdStr1));
-			productCreatedEvent1.setProductCategory(prod1.getProductCategory());
-			productCreatedEvent1.setProductName(prod1.getName());
-			productCreatedEvent1.setProductPrice(prod1.getPrice());
-			productEventRepository.save(productCreatedEvent1);
-			System.out.println(productCreatedEvent1);
+			ProductEvent productEvent1 = new ProductEvent();
+			productEvent1.setEventName("Create");
+			productEvent1.setProductId(new ProductId(productIdStr1));
+			productEvent1.setProductCategory(prod1.getProductCategory());
+			productEvent1.setProductName(prod1.getName());
+			productEvent1.setProductPrice(prod1.getPrice());
+			productEvent1.setDescription(prod1.getDescription());
+			productEvent1.setComment(prod1.getComment());
+			productEventRepository.save(productEvent1);
+			System.out.println(productEvent1);
 
 			ProductAggregate prod2 = new ProductAggregate();
 			prod2.setProductId(new ProductId(productIdStr2));
 			prod2.setProductCategory(new ProductCategory("Dried Goods"));
 			prod2.setName(new Name("Cereal XYZ"));
 			prod2.setPrice(new Price(7.99));
+			prod2.setDescription(new Description("Fibrous Cereal"));
+			prod2.setComment(new Comment("Makes you a take a sheit!"));
 			productRepository.save(prod2);
 
-			ProductCreatedEvent productCreatedEvent2 = new ProductCreatedEvent();
-			productCreatedEvent2.setEventName("Create");
-			productCreatedEvent2.setProductId(new ProductId(productIdStr2));
-			productCreatedEvent2.setProductCategory(prod2.getProductCategory());
-			productCreatedEvent2.setProductName(prod2.getName());
-			productCreatedEvent2.setProductPrice(prod2.getPrice());
-			productEventRepository.save(productCreatedEvent2);
-			System.out.println(productCreatedEvent2);
+			ProductEvent productEvent2 = new ProductEvent();
+			productEvent2.setEventName("Create");
+			productEvent2.setProductId(new ProductId(productIdStr2));
+			productEvent2.setProductCategory(prod2.getProductCategory());
+			productEvent2.setProductName(prod2.getName());
+			productEvent2.setProductPrice(prod2.getPrice());
+			productEvent2.setDescription(prod2.getDescription());
+			productEvent2.setComment(prod2.getComment());
+			productEventRepository.save(productEvent2);
+			System.out.println(productEvent2);
 
 		};
 	}

@@ -29,6 +29,14 @@ public class ProductAggregate extends AbstractAggregateRoot<ProductAggregate> {
     @JsonUnwrapped
     private Price price;
 
+    @Embedded
+    @JsonUnwrapped
+    private Description description;
+
+    @Embedded
+    @JsonUnwrapped
+    private Comment comment;
+
 //    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private ProductDetail productDetail;
 
@@ -49,7 +57,17 @@ public class ProductAggregate extends AbstractAggregateRoot<ProductAggregate> {
 
     public void setPrice(Price price) { this.price = price; }
 
-//    public ProductDetail getProductDetail() { return productDetail; }
+    public Description getDescription() {
+        return description;
+    }
+
+    public void setDescription(Description description) { this.description = description; }
+
+    public Comment getComment() { return comment; }
+
+    public void setComment(Comment comment) { this.comment = comment; }
+
+    //    public ProductDetail getProductDetail() { return productDetail; }
 //
 //    public void setProductDetail(ProductDetail productDetail) { this.productDetail = productDetail; }
 }
