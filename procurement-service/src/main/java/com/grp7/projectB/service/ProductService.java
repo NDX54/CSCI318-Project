@@ -26,7 +26,9 @@ public class ProductService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    ProductService(ProductRepository productRepository, ProductEventRepository productEventRepository, RestTemplate restTemplate,
+    ProductService(ProductRepository productRepository,
+                   ProductEventRepository productEventRepository,
+                   RestTemplate restTemplate,
                    ApplicationEventPublisher applicationEventPublisher) {
         this.productRepository = productRepository;
         this.productEventRepository = productEventRepository;
@@ -36,11 +38,9 @@ public class ProductService {
 
     public List<ProductAggregate> getAllProducts() { return productRepository.findAll(); }
 
-    public ProductAggregate getProduct(String productId) { return productRepository.findById(productId).orElseThrow(EntityNotFoundException::new); }
-
     public ProductAggregate getProduct(ProductId productId) { return productRepository.findByProductId(productId).orElseThrow(EntityNotFoundException::new); }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void createProduct(ProductAggregate newProductAggregate) {
 
         String random = UUID.randomUUID().toString().toUpperCase();
@@ -64,7 +64,7 @@ public class ProductService {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public void updateProduct(ProductId productId, ProductAggregate productAggregate) {
         ProductAggregate existingProductAggregate = productRepository.findByProductId(productId).orElseThrow(EntityNotFoundException::new);
         existingProductAggregate.setProductCategory(productAggregate.getProductCategory());
