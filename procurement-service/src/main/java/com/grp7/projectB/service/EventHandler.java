@@ -17,7 +17,7 @@ public class EventHandler {
 
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handleProductCreationEvent(ProductEvent productEvent) {
+    public void handleProductEvent(ProductEvent productEvent) {
         productEventRepository.save(productEvent);
         System.out.println(productEvent);
     }

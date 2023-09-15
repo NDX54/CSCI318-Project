@@ -1,11 +1,13 @@
 package com.grp7.projectB.controller;
 
 
+import com.grp7.projectB.controller.dto.AddToOrderDTO;
 import com.grp7.projectB.controller.dto.ProductDTO;
 import com.grp7.projectB.model.aggregates.ProductAggregate;
 import com.grp7.projectB.model.aggregates.ProductId;
 import com.grp7.projectB.repository.ProductRepository;
 import com.grp7.projectB.service.ProductService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,9 @@ public class ProcurementController {
 
     @PutMapping("/{productId}")
     void update(@PathVariable ProductId productId, @RequestBody ProductAggregate productAggregate) { productService.updateProduct(productId, productAggregate); }
+
+    @DeleteMapping("/delete/{productId}")
+    void delete(@PathVariable ProductId productId) { productService.deleteProduct(productId); }
 
     @GetMapping
     List<ProductDTO> allProducts() {
@@ -54,4 +59,14 @@ public class ProcurementController {
         productDTO.setPrice(productAggregate.getPrice());
         return productDTO;
     }
+
+    @PostMapping("/add-to-order")
+    void addProductToOrder(@RequestBody AddToOrderDTO addToOrderDTO) {
+        try {
+            productService.addProductToOrder(addToOrderDTO.getProductIdDTO(), addToOrderDTO.getOrderId());
+        } catch (EntityNotFoundException e) {
+            ResponseEntity.notFound().build();
+        }
+    }
+
 }

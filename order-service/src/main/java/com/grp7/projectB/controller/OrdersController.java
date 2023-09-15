@@ -1,46 +1,92 @@
 package com.grp7.projectB.controller;
 
-import com.grp7.projectB.model.entities.Orders;
-import com.grp7.projectB.repository.OrdersRepository;
+import com.grp7.projectB.controller.dto.OrderDTO;
+import com.grp7.projectB.model.aggregates.OrderAggregate;
+import com.grp7.projectB.model.aggregates.OrderId;
+import com.grp7.projectB.model.aggregates.ProductAggregate;
+import com.grp7.projectB.model.services.OrderService;
+import com.grp7.projectB.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/orders")
 public class OrdersController {
-    private final OrdersRepository ordersRepository;
+    private final OrderRepository orderRepository;
+
+    private final OrderService orderService;
+
+    private final RestTemplate restTemplate;
 //    private final ProductRepository productRepository;
 
     @Autowired
-    OrdersController(OrdersRepository ordersRepository) {
-        this.ordersRepository = ordersRepository;
+    OrdersController(OrderRepository orderRepository, OrderService orderService, RestTemplate restTemplate) {
+        this.orderRepository = orderRepository;
+        this.orderService = orderService;
+        this.restTemplate = restTemplate;
 //        this.productRepository = productRepository;
     }
 
     @GetMapping
-    List<Orders> all() { return ordersRepository.findAll(); }
+    List<OrderAggregate> all() { return orderRepository.findAll(); }
 
     @GetMapping("/{order_id}")
-    Orders getOrderByID(@PathVariable Long order_id) { return ordersRepository.findById(order_id).orElseThrow(RuntimeException::new); }
+    OrderAggregate getOrderByID(@PathVariable OrderId order_id) { return orderRepository.findByOrderId(order_id).orElseThrow(RuntimeException::new); }
+
+//    @PostMapping()
+//    OrderAggregate createOrder(@RequestBody OrderAggregate newOrders) {
+//
+//
+//        return orderRepository.save(newOrders);
+//    }
 
     @PostMapping()
-    Orders createOrder(@RequestBody Orders newOrders) { return ordersRepository.save(newOrders); }
+    public void createOrder(@RequestBody OrderDTO orderDTO) {
+        try {
+            // Replace "product-service-base-url" with the actual URL of the product service
+            String productServiceUrl = "http://localhost:8082/products/" + orderDTO.getProductId().getProductId();
+            ResponseEntity<ProductAggregate> productResponse = restTemplate.getForEntity(productServiceUrl, ProductAggregate.class);
 
-    @PutMapping("/{order_id}")
-    Orders updateOrder(@PathVariable Long order_id, @RequestBody Orders order) {
-        Orders updatedOrder = ordersRepository.findById(order_id).orElseThrow(RuntimeException::new);
+            if (productResponse.getStatusCode() == HttpStatus.OK) {
+                // Product found, create the order with product details
+                String random = UUID.randomUUID().toString().toUpperCase();
+                String orderIdStr = random.substring(0, random.indexOf("-"));
+                OrderAggregate order = new OrderAggregate();
+//                order.setOrderId(new OrderId(orderIdStr));
+                order.setProduct(productResponse.getBody());
+                order.setQuantity(orderDTO.getQuantity());
+//                orderService.createOrder(order);
+                orderRepository.save(order);
 
-        updatedOrder.setId(order_id);
-        updatedOrder.setSupplier(order.getSupplier());
-        updatedOrder.setProduct(order.getProduct());
-        updatedOrder.setQuantity(order.getQuantity());
-
-        return ordersRepository.save(updatedOrder);
+                ResponseEntity.ok("Order created successfully");
+            } else {
+                // Product not found, handle the error
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+            }
+        } catch (RestClientException e) {
+            // Handle communication errors with the product service
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error communicating with the product service");
+        }
     }
 
 
+    @PutMapping("/{order_id}")
+    OrderAggregate updateOrder(@PathVariable OrderId order_id, @RequestBody OrderAggregate orderAggregate) {
+        OrderAggregate updatedOrder = orderRepository.findByOrderId(order_id).orElseThrow(RuntimeException::new);
 
+//        updatedOrder.setId(order_id);
+        updatedOrder.setSupplier(orderAggregate.getSupplier());
+        updatedOrder.setProduct(orderAggregate.getProduct());
+        updatedOrder.setQuantity(orderAggregate.getQuantity());
+
+        return orderRepository.save(updatedOrder);
+    }
 
 }

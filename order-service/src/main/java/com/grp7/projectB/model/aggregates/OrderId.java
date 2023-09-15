@@ -1,8 +1,10 @@
 package com.grp7.projectB.model.aggregates;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Embeddable
 public class OrderId implements Serializable {
 
     @Column(name = "order_id")

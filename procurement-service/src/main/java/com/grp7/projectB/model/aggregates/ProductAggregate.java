@@ -37,9 +37,6 @@ public class ProductAggregate extends AbstractAggregateRoot<ProductAggregate> {
     @JsonUnwrapped
     private Comment comment;
 
-//    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private ProductDetail productDetail;
-
 
     public ProductId getProductId() { return productId; }
 
@@ -67,7 +64,4 @@ public class ProductAggregate extends AbstractAggregateRoot<ProductAggregate> {
 
     public void setComment(Comment comment) { this.comment = comment; }
 
-    //    public ProductDetail getProductDetail() { return productDetail; }
-//
-//    public void setProductDetail(ProductDetail productDetail) { this.productDetail = productDetail; }
 }

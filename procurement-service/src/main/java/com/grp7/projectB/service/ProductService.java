@@ -1,9 +1,12 @@
 package com.grp7.projectB.service;
 
 
+import com.grp7.projectB.model.aggregates.OrderAggregate;
+import com.grp7.projectB.model.aggregates.OrderId;
 import com.grp7.projectB.model.aggregates.ProductAggregate;
 import com.grp7.projectB.model.aggregates.ProductId;
 import com.grp7.projectB.model.events.ProductEvent;
+import com.grp7.projectB.repository.OrderRepository;
 import com.grp7.projectB.repository.ProductEventRepository;
 import com.grp7.projectB.repository.ProductRepository;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,18 +24,22 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    private final OrderRepository orderRepository;
+
     private final ProductEventRepository productEventRepository;
-    private final RestTemplate restTemplate;
+//    private final RestTemplate restTemplate;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
     ProductService(ProductRepository productRepository,
+                   OrderRepository orderRepository,
                    ProductEventRepository productEventRepository,
                    RestTemplate restTemplate,
                    ApplicationEventPublisher applicationEventPublisher) {
         this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
         this.productEventRepository = productEventRepository;
-        this.restTemplate = restTemplate;
+//        this.restTemplate = restTemplate;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -76,6 +83,7 @@ public class ProductService {
 
         productRepository.save(existingProductAggregate);
 
+
         ProductEvent productEvent = new ProductEvent();
 
         productEvent.setEventName("Update");
@@ -87,6 +95,43 @@ public class ProductService {
         productEvent.setComment(productAggregate.getComment());
 
         applicationEventPublisher.publishEvent(productEvent);
+    }
+
+    @Transactional
+    public void deleteProduct(ProductId productId) {
+        ProductAggregate productToDelete = productRepository.findByProductId(productId).orElseThrow(EntityNotFoundException::new);
+
+        ProductEvent productEvent = new ProductEvent();
+
+        productEvent.setEventName("Delete");
+        productEvent.setProductId(productId);
+        productEvent.setProductCategory(productToDelete.getProductCategory());
+        productEvent.setProductName(productToDelete.getName());
+        productEvent.setProductPrice(productToDelete.getPrice());
+        productEvent.setDescription(productToDelete.getDescription());
+        productEvent.setComment(productToDelete.getComment());
+
+        applicationEventPublisher.publishEvent(productEvent);
+
+        productRepository.deleteByProductId(productId);
+
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void addProductToOrder(ProductId productId, OrderId orderId) {
+
+        OrderAggregate order = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
+
+        ProductAggregate product = productRepository.findByProductId(productId).orElseThrow(EntityNotFoundException::new);
+
+        if (order == null || product == null) {
+            throw new EntityNotFoundException("Order or product not found");
+        }
+
+        order.setProduct(product);
+
+        orderRepository.save(order);
+
     }
 
 }
