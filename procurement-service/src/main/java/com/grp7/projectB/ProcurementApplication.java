@@ -23,7 +23,7 @@ public class ProcurementApplication {
 	}
 
 //	@Bean
-//	public RestTemplate restTemplateProcurement(RestTemplateBuilder builder) { return builder.build(); }
+//	public RestTemplate restTemplate(RestTemplateBuilder builder) { return builder.build(); }
 
 	@Bean
 	public CommandLineRunner loadDatabase(ProductRepository productRepository, ProductEventRepository productEventRepository) throws Exception {

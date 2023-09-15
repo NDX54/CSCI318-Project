@@ -16,8 +16,9 @@
 	<description>CSCI318 Project A</description>
     <modules>
         <module>procurement-service</module>
-		<module>order-service</module>
-		<module>customer-service</module>
+<!--		<module>order-service</module>-->
+		<module>customer-account-service</module>
+		<module>sales-service</module>
 	</modules>
     <properties>
 		<java.version>11</java.version>

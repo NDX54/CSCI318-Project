@@ -60,13 +60,13 @@ public class ProcurementController {
         return productDTO;
     }
 
-    @PostMapping("/add-to-order")
-    void addProductToOrder(@RequestBody AddToOrderDTO addToOrderDTO) {
-        try {
-            productService.addProductToOrder(addToOrderDTO.getProductIdDTO(), addToOrderDTO.getOrderId());
-        } catch (EntityNotFoundException e) {
-            ResponseEntity.notFound().build();
-        }
-    }
+//    @PostMapping("/add-to-order")
+//    void addProductToOrder(@RequestBody AddToOrderDTO addToOrderDTO) {
+//        try {
+//            productService.addProductToOrder(addToOrderDTO.getProductIdDTO(), addToOrderDTO.getOrderId());
+//        } catch (EntityNotFoundException e) {
+//            ResponseEntity.notFound().build();
+//        }
+//    }
 
 }

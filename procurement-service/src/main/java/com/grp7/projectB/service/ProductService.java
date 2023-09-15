@@ -9,6 +9,7 @@ import com.grp7.projectB.model.events.ProductEvent;
 import com.grp7.projectB.repository.OrderRepository;
 import com.grp7.projectB.repository.ProductEventRepository;
 import com.grp7.projectB.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,7 +28,8 @@ public class ProductService {
     private final OrderRepository orderRepository;
 
     private final ProductEventRepository productEventRepository;
-//    private final RestTemplate restTemplate;
+
+    private final RestTemplate restTemplate;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -39,7 +41,7 @@ public class ProductService {
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
         this.productEventRepository = productEventRepository;
-//        this.restTemplate = restTemplate;
+        this.restTemplate = restTemplate;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -128,7 +130,7 @@ public class ProductService {
             throw new EntityNotFoundException("Order or product not found");
         }
 
-        order.setProduct(product);
+//        order.setProduct(product);
 
         orderRepository.save(order);
 

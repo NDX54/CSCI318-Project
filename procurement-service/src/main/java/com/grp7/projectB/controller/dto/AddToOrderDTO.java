@@ -2,7 +2,6 @@ package com.grp7.projectB.controller.dto;
 
 import com.grp7.projectB.model.aggregates.OrderId;
 import com.grp7.projectB.model.aggregates.ProductId;
-import com.grp7.projectB.model.valueobjects.Product;
 
 public class AddToOrderDTO {
 
