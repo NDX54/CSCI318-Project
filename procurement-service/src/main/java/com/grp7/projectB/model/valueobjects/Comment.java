@@ -1,13 +1,10 @@
 package com.grp7.projectB.model.valueobjects;
 
-
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Comment {
 
-    @Column(name = "comment", unique = false, updatable = true)
     private String comment;
 
     public Comment() {}

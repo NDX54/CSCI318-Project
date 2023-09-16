@@ -11,6 +11,7 @@ public interface ProductRepository extends JpaRepository<ProductAggregate, Strin
 //    List<ProductAggregate> findAllWithProductDetail();
 
     Optional<ProductAggregate> findByProductId(ProductId productId);
+    Optional<ProductAggregate> findByName(String name);
 
     Optional<ProductAggregate> deleteByProductId(ProductId productId);
 }

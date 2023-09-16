@@ -1,15 +1,10 @@
 package com.grp7.projectB.service;
 
-
-import com.grp7.projectB.model.aggregates.OrderAggregate;
-import com.grp7.projectB.model.aggregates.OrderId;
 import com.grp7.projectB.model.aggregates.ProductAggregate;
 import com.grp7.projectB.model.aggregates.ProductId;
 import com.grp7.projectB.model.events.ProductEvent;
-import com.grp7.projectB.repository.OrderRepository;
 import com.grp7.projectB.repository.ProductEventRepository;
 import com.grp7.projectB.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,23 +20,18 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    private final OrderRepository orderRepository;
-
     private final ProductEventRepository productEventRepository;
 
-    private final RestTemplate restTemplate;
+//    private final RestTemplate restTemplate;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
     ProductService(ProductRepository productRepository,
-                   OrderRepository orderRepository,
                    ProductEventRepository productEventRepository,
-                   RestTemplate restTemplate,
                    ApplicationEventPublisher applicationEventPublisher) {
         this.productRepository = productRepository;
-        this.orderRepository = orderRepository;
         this.productEventRepository = productEventRepository;
-        this.restTemplate = restTemplate;
+//        this.restTemplate = restTemplate;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -116,23 +106,6 @@ public class ProductService {
         applicationEventPublisher.publishEvent(productEvent);
 
         productRepository.deleteByProductId(productId);
-
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void addProductToOrder(ProductId productId, OrderId orderId) {
-
-        OrderAggregate order = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
-
-        ProductAggregate product = productRepository.findByProductId(productId).orElseThrow(EntityNotFoundException::new);
-
-        if (order == null || product == null) {
-            throw new EntityNotFoundException("Order or product not found");
-        }
-
-//        order.setProduct(product);
-
-        orderRepository.save(order);
 
     }
 

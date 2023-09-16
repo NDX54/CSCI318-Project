@@ -1,5 +1,6 @@
 package com.projectB.controller;
 
+import com.grp7.projectB.model.aggregates.CustomerId;
 import com.projectB.model.valueobjects.Quantity;
 
 import java.util.UUID;
@@ -7,6 +8,8 @@ import java.util.UUID;
 public class OrderDTO {
 
     private String orderId;
+
+    private CustomerId customerId;
     private String supplier;
     private String product;
     private Quantity quantity;
@@ -15,8 +18,9 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    public OrderDTO(String orderId, String supplier, String product, Quantity quantity) {
+    public OrderDTO(String orderId, CustomerId customerId, String supplier, String product, Quantity quantity) {
         this.orderId = orderId;
+        this.customerId = customerId;
         this.supplier = supplier;
         this.product = product;
         this.quantity = quantity;
@@ -30,6 +34,14 @@ public class OrderDTO {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public CustomerId getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(CustomerId customerId) {
+        this.customerId = customerId;
     }
 
     public String getSupplier() {

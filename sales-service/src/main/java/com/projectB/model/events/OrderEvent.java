@@ -1,5 +1,7 @@
 package com.projectB.model.events;
 
+import com.grp7.projectB.model.aggregates.CustomerId;
+import com.grp7.projectB.model.aggregates.ProductId;
 import com.projectB.model.aggregates.OrderAggregate;
 import com.projectB.model.aggregates.OrderId;
 import com.projectB.model.valueobjects.Quantity;
@@ -17,7 +19,13 @@ public class OrderEvent {
     private String eventName;
 
     @Column
-    private OrderId orderId;
+    private String orderId;
+
+    @Column
+    private String customerId;
+
+    @Column
+    private String productId;
 
     @Column
     private String supplier;
@@ -29,11 +37,13 @@ public class OrderEvent {
     private Quantity quantity;
 
     // No-args constructor for JPA
-    protected OrderEvent() {
+    public OrderEvent() {
     }
 
-    public OrderEvent(OrderId orderId, String supplier, String product, Quantity quantity) {
+    public OrderEvent(String orderId, String customerId, String productId, String supplier, String product, Quantity quantity) {
         this.orderId = orderId;
+        this.customerId = customerId;
+        this.productId = productId;
         this.supplier = supplier;
         this.product = product;
         this.quantity = quantity;
@@ -60,12 +70,28 @@ public class OrderEvent {
         this.eventName = eventName;
     }
 
-    public OrderId getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(OrderId orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getSupplier() {

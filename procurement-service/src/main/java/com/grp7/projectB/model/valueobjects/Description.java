@@ -1,12 +1,10 @@
 package com.grp7.projectB.model.valueobjects;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Description {
 
-    @Column(name = "description", unique = false, updatable = true)
     private String description;
 
     public Description() {}

@@ -1,5 +1,6 @@
 package com.grp7.projectB.model.aggregates;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import com.grp7.projectB.model.aggregates.CustomerId;
 import com.grp7.projectB.model.entities.Contact;
@@ -22,6 +23,8 @@ public class CustomerAggregate extends AbstractAggregateRoot<CustomerAggregate> 
     private String companyName;
 
     @Embedded
+    @Column(name = "customer_id")
+    @JsonUnwrapped
     private CustomerId customerId;
 
     @Embedded

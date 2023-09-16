@@ -1,6 +1,7 @@
 package com.grp7.projectB.controller;
 
 import com.grp7.projectB.model.aggregates.CustomerAggregate;
+import com.grp7.projectB.model.aggregates.CustomerId;
 import com.grp7.projectB.model.entities.Contact;
 import com.grp7.projectB.repository.ContactRepository;
 import com.grp7.projectB.repository.CustomerRepository;
@@ -34,7 +35,7 @@ public class CustomerController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public CustomerAggregate updateCustomer(@PathVariable Long id, @RequestBody CustomerAggregate updatedCustomerAggregate) {
         CustomerAggregate existingCustomerAggregate = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
@@ -109,8 +110,8 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public CustomerAggregate getCustomerById(@PathVariable Long id) {
-        return customerRepository.findById(id)
+    public CustomerAggregate getCustomerById(@PathVariable CustomerId id) {
+        return customerRepository.findCustomerByCustomerId(id)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
     }
 }

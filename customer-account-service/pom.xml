@@ -19,18 +19,6 @@
     </properties>
 
     <dependencies>
-        <!-- Project Dependencies -->
-        <!--        <dependency>-->
-        <!--            <groupId>com.grp7</groupId>-->
-        <!--            <artifactId>customer-service</artifactId>-->
-        <!--            <version>0.0.1-SNAPSHOT</version>-->
-        <!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>com.grp7</groupId>-->
-<!--            <artifactId>procurement-service</artifactId>-->
-<!--            <version>0.0.1-SNAPSHOT</version>-->
-<!--        </dependency>-->
 
         <!-- Spring Boot Web Starter for REST API -->
         <dependency>

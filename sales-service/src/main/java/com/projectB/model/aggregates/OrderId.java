@@ -42,6 +42,6 @@ public class OrderId {
 
     @Override
     public String toString() {
-        return orderId.toString();
+        return orderId;
     }
 }

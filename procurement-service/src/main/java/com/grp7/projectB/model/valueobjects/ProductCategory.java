@@ -1,12 +1,10 @@
 package com.grp7.projectB.model.valueobjects;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class ProductCategory {
 
-    @Column(name = "product_category", unique = false, updatable = true)
     private String productCategory;
 
     public ProductCategory() {}

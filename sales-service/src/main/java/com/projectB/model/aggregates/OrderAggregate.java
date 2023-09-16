@@ -1,5 +1,6 @@
 package com.projectB.model.aggregates;
 
+import com.grp7.projectB.model.aggregates.CustomerId;
 import com.projectB.model.valueobjects.Quantity;
 
 import javax.persistence.*;
@@ -15,6 +16,10 @@ public class OrderAggregate {
     private OrderId orderId; // Unique identifier for the OrderAggregate
     @Column
     private String customerId;
+
+    @Column
+    private String productId;
+
     @Column
     private String supplier;
     @Column
@@ -26,9 +31,10 @@ public class OrderAggregate {
     protected OrderAggregate() {
     }
 
-    public OrderAggregate(OrderId orderId, String customerId, String supplier, String product, Quantity quantity) {
+    public OrderAggregate(OrderId orderId, String customerId, String productId, String supplier, String product, Quantity quantity) {
         this.orderId = orderId;
         this.customerId = customerId;
+        this.productId = productId;
         this.supplier = supplier;
         this.product = product;
         this.quantity = quantity;
@@ -56,6 +62,14 @@ public class OrderAggregate {
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getSupplier() {

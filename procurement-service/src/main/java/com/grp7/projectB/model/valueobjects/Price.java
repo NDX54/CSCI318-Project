@@ -1,12 +1,10 @@
 package com.grp7.projectB.model.valueobjects;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Price {
 
-    @Column(name = "price", unique = false, updatable = true)
     private Double price;
 
     public Price() {}

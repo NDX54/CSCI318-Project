@@ -19,10 +19,22 @@
     <dependencies>
 <!--        <dependency>-->
 <!--            <groupId>com.grp7</groupId>-->
-<!--            <artifactId>order-service</artifactId>-->
+<!--            <artifactId>sales-service</artifactId>-->
 <!--            <version>0.0.1-SNAPSHOT</version>-->
 <!--            <scope>compile</scope>-->
 <!--        </dependency>-->
+        <!-- Spring Boot Web Starter for REST API -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Data JPA Starter for database operations -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

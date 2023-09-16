@@ -14,26 +14,32 @@ public class ProductAggregate extends AbstractAggregateRoot<ProductAggregate> {
     private Long id;
 
     @Embedded
+    @Column(name = "product_id")
     @JsonUnwrapped
     private ProductId productId;
 
     @Embedded
+    @Column(name = "product_category", unique = false, updatable = true)
     @JsonUnwrapped
     private ProductCategory productCategory;
 
     @Embedded
+    @Column(name = "name", unique = false, updatable = true)
     @JsonUnwrapped
     private Name name;
 
     @Embedded
+    @Column(name = "price", unique = false, updatable = true)
     @JsonUnwrapped
     private Price price;
 
     @Embedded
+    @Column(name = "description", unique = false, updatable = true)
     @JsonUnwrapped
     private Description description;
 
     @Embedded
+    @Column(name = "comment", unique = false, updatable = true)
     @JsonUnwrapped
     private Comment comment;
 
