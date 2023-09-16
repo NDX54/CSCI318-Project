@@ -35,9 +35,9 @@ public class CustomerController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public CustomerAggregate updateCustomer(@PathVariable Long id, @RequestBody CustomerAggregate updatedCustomerAggregate) {
-        CustomerAggregate existingCustomerAggregate = customerRepository.findById(id)
+    @PutMapping("/update/{customerId}")
+    public CustomerAggregate updateCustomer(@PathVariable Long customerId, @RequestBody CustomerAggregate updatedCustomerAggregate) {
+        CustomerAggregate existingCustomerAggregate = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // 본문에서 필요한 로직을 추가하세요.
@@ -60,9 +60,9 @@ public class CustomerController {
         return customerRepository.save(existingCustomerAggregate);
     }
 
-    @PostMapping("/{customer_id}/contacts")
-    public Contact createCustomerContact(@PathVariable Long customer_id, @RequestBody Contact contact) {
-        CustomerAggregate customerAggregate = customerRepository.findById(customer_id)
+    @PostMapping("/{customerId}/contacts")
+    public Contact createCustomerContact(@PathVariable Long customerId, @RequestBody Contact contact) {
+        CustomerAggregate customerAggregate = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // 중복된 연락처 검사
@@ -79,20 +79,20 @@ public class CustomerController {
         return contact;
     }
 
-    @PutMapping("/{customer_id}/contacts/{contact_id}")
+    @PutMapping("/{customerId}/contacts/{contactId}")
     public Contact updateCustomerContact(
-            @PathVariable Long customer_id,
-            @PathVariable Long contact_id,
+            @PathVariable Long customerId,
+            @PathVariable Long contactId,
             @RequestBody Contact updatedContact
     ) {
-        CustomerAggregate customerAggregate = customerRepository.findById(customer_id)
+        CustomerAggregate customerAggregate = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // 본문에서 필요한 로직을 추가하세요.
 
         // 예시: 본문에서 필요한 로직을 추가한 예시
         Contact contactToUpdate = customerAggregate.getContacts().stream()
-                .filter(contact -> contact.getId() == contact_id)
+                .filter(contact -> contact.getId() == contactId)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Contact not found"));
 
@@ -109,9 +109,9 @@ public class CustomerController {
         return customerRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public CustomerAggregate getCustomerById(@PathVariable CustomerId id) {
-        return customerRepository.findCustomerByCustomerId(id)
+    @GetMapping("/{customerId}")
+    public CustomerAggregate getCustomerById(@PathVariable CustomerId customerId) {
+        return customerRepository.findCustomerByCustomerId(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
     }
 }

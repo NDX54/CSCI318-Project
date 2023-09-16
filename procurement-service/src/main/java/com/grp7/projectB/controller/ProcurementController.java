@@ -26,7 +26,7 @@ public class ProcurementController {
     @PostMapping
     void create(@RequestBody ProductAggregate newProductAggregate) { productService.createProduct(newProductAggregate); }
 
-    @PutMapping("/{productId}")
+    @PutMapping("/update/{productId}")
     void update(@PathVariable ProductId productId, @RequestBody ProductAggregate productAggregate) { productService.updateProduct(productId, productAggregate); }
 
     @DeleteMapping("/delete/{productId}")
@@ -35,7 +35,7 @@ public class ProcurementController {
     @GetMapping
     List<ProductAggregate> allProducts() { return productService.getAllProducts(); }
 
-    @GetMapping("/{productId}")
+    @GetMapping("/get/{productId}")
     ProductAggregate find(@PathVariable ProductId productId) { return productService.getProduct(productId); }
 
 }
