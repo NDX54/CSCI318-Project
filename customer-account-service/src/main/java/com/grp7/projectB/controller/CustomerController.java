@@ -36,8 +36,8 @@ public class CustomerController {
     }
 
     @PutMapping("/update/{customerId}")
-    public CustomerAggregate updateCustomer(@PathVariable Long customerId, @RequestBody CustomerAggregate updatedCustomerAggregate) {
-        CustomerAggregate existingCustomerAggregate = customerRepository.findById(customerId)
+    public CustomerAggregate updateCustomer(@PathVariable CustomerId customerId, @RequestBody CustomerAggregate updatedCustomerAggregate) {
+        CustomerAggregate existingCustomerAggregate = customerRepository.findCustomerByCustomerId(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // 본문에서 필요한 로직을 추가하세요.
@@ -101,7 +101,7 @@ public class CustomerController {
         contactToUpdate.setEmail(updatedContact.getEmail());
         contactToUpdate.setPosition(updatedContact.getPosition());
 
-        return contactToUpdate;
+        return contactRepository.save(contactToUpdate);
     }
 
     @GetMapping

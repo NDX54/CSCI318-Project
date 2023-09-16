@@ -47,7 +47,7 @@ public class OrderService {
         String orderIdStr = random.substring(0, random.indexOf("-"));
 
         final String customerURL = "http://localhost:8081/customers/";
-        final String productURL = "http://localhost:8082/products/";
+        final String productURL = "http://localhost:8082/products/get/";
         ResponseEntity<String> response1 = restTemplate.getForEntity(customerURL + customerId, String.class);
         ResponseEntity<String> response2 = restTemplate.getForEntity(productURL + productId, String.class);
         String customerResponse = response1.getBody();
@@ -95,7 +95,7 @@ public class OrderService {
     @Transactional
     public void updateOrder(OrderAggregate orderAggregate, OrderId orderId, ProductId productId) {
 
-        final String productURL = "http://localhost:8082/products/";
+        final String productURL = "http://localhost:8082/products/get/";
         ResponseEntity<String> response = restTemplate.getForEntity(productURL + productId, String.class);
         String productResponse = response.getBody();
 
