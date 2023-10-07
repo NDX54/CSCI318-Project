@@ -28,7 +28,7 @@ public class AnalyticsService {
     }
 
     @StreamListener(AnalyticsSource.CUSTOMER_UPDATE_INPUT)
-    public void receiveOrderDeletedEvent(CustomerEventDTO customerEventDTO) {
+    public void receiveCustomerUpdatedEvent(CustomerEventDTO customerEventDTO) {
 
         if (customerEventDTO == null) {
             System.out.println("ERROR: Received null customerEventDTO");
