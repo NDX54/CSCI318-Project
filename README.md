@@ -64,7 +64,7 @@ In Windows, delete the folders `C:\tmp\zookeeper`, `C:\tmp\kafka-logs` and `C:\k
 C:\kafka\bin\windows\kafka-topics.bat --bootstrap-server=localhost:9092 --list
 ```
 
-You should see the topic names `orderCreations`, `orderDeletions`, `productCreations`, `productDeletions`, and `productUpdates`. You can consume data in any of the topics:
+You should see the topic names `customerCreations`, `customerUpdates`, `orderCreations`, `orderDeletions`, `productCreations`, `productDeletions`, and `productUpdates`. You can consume data in any of the topics:
 
 #### Linux / macOS
 
