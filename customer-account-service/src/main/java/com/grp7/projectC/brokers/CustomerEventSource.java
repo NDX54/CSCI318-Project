@@ -13,9 +13,9 @@ public interface CustomerEventSource {
     @Output(CUSTOMER_CREATION_CHANNEL)
     MessageChannel customerCreation();
 
-    @Output(CUSTOMER_DELETION_CHANNEL)
+    @Output(CUSTOMER_UPDATE_CHANNEL)
     MessageChannel customerUpdate();
 
-    @Output(CUSTOMER_UPDATE_CHANNEL)
+    @Output(CUSTOMER_DELETION_CHANNEL)
     MessageChannel customerDeletion();
 }
