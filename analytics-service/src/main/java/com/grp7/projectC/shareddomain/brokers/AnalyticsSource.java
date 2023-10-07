@@ -31,10 +31,10 @@ public interface AnalyticsSource {
     @Input(CUSTOMER_CREATION_INPUT)
     SubscribableChannel customerCreation();
 
-    @Input(CUSTOMER_DELETION_INPUT)
+    @Input(CUSTOMER_UPDATE_INPUT)
     SubscribableChannel customerUpdate();
 
-    @Input(CUSTOMER_UPDATE_INPUT)
+    @Input(CUSTOMER_DELETION_INPUT)
     SubscribableChannel customerDeletion();
 
 

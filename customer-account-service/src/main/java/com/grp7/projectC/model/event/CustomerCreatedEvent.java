@@ -19,7 +19,7 @@ public class CustomerCreatedEvent {
     private String customerEmail;
     private String customerPhoneNumber;
 
-    private Integer ordersMade;
+    private Integer ordersMade = 0;
     private String eventName;
 
     public CustomerCreatedEvent() {}
@@ -72,6 +72,8 @@ public class CustomerCreatedEvent {
     public Integer getOrdersMade() {
         return ordersMade;
     }
+
+    public Integer incrementOrdersMade() { return this.ordersMade++; }
 
     public void setOrdersMade(Integer ordersMade) {
         this.ordersMade = ordersMade;

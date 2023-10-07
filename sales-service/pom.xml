@@ -19,7 +19,7 @@
     </properties>
 
     <dependencies>
-        <!-- Project Dependencies -->
+<!--         Project Dependencies-->
         <dependency>
             <groupId>com.grp7</groupId>
             <artifactId>customer-account-service</artifactId>

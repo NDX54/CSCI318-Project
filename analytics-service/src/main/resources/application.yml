@@ -8,7 +8,6 @@ spring.cloud.stream.bindings:
     destination: orderCreations
   orderDeletionChannel:
     destination: orderDeletions
-
   customerCreationChannel:
     destination: customerCreations
   customerUpdateChannel:
@@ -44,4 +43,4 @@ spring.cloud.stream.kafka.streams.binder:
     commit.interval.ms: 500
     default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
     default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
-    spring.json.value.default.type: com.grp7.projectB.shareddomain.events.OrderEvent
+    spring.json.value.default.type: com.grp7.projectC.applicationservice.dto.CustomerEventDTO

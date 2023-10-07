@@ -68,7 +68,7 @@ public class CustomerEventDTO {
 
     @Override
     public String toString() {
-        return "CustomerEventData{customerId='" + customerId + '\'' +
+        return "CustomerEventDTO{customerId='" + customerId + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
                 ", customerPhoneNumber='" + customerPhoneNumber + '\'' +

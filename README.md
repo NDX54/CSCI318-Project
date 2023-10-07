@@ -1,7 +1,5 @@
 # CSCI318 - Project C - Group 7 - README
 
-# TODO - Stream processor for Analytics Microservice
-
 ## Members
 
 - **Myunggyun Yu - 7539629**

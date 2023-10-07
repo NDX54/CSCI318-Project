@@ -56,15 +56,18 @@ public class CustomerService {
     public void updateCustomerOrderNumber(CustomerId customerId) {
         CustomerAggregate customer = customerRepository.findCustomerByCustomerId(customerId).orElseThrow(EntityNotFoundException::new);
 
-        Integer incrementedOrderMadeByCustomer = customer.getOrdersMade().incrementOrdersMade();
+//        Integer incrementedOrderMadeByCustomer = customer.getOrdersMade().incrementOrdersMade();
 
+//        System.out.println("FROM updateCustomerOrderNumber: " + incrementedOrderMadeByCustomer);
+        customer.getOrdersMade().incrementOrdersMade();
         CustomerCreatedEvent customerUpdatedEvent = new CustomerCreatedEvent();
         customerUpdatedEvent.setEventName(CustomerCreatedEvent.CUSTOMER_UPDATED);
         customerUpdatedEvent.setCustomerId(customer.getCustomerId().getCustomerId());
         customerUpdatedEvent.setCustomerName(customer.getCompanyName());
         customerUpdatedEvent.setCustomerEmail(customer.getEmail().getAddress());
         customerUpdatedEvent.setCustomerPhoneNumber(customer.getPhone().getNumber());
-        customerUpdatedEvent.setOrdersMade(incrementedOrderMadeByCustomer);
+        customerUpdatedEvent.incrementOrdersMade();
+        System.out.println("FROM updateCustomerOrderNumber: " + customerUpdatedEvent.getOrdersMade());
 
         eventPublisher.publishEvent(customerUpdatedEvent);
 
