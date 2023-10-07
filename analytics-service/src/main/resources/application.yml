@@ -1,0 +1,47 @@
+server.port: 8788
+spring.cloud.stream.bindings:
+  processOrderCreation-in-0:
+    destination: customerUpdates
+#  processOrderDeletion-in-1:
+#    destination: orderDeletions
+  orderCreationChannel:
+    destination: orderCreations
+  orderDeletionChannel:
+    destination: orderDeletions
+
+  customerCreationChannel:
+    destination: customerCreations
+  customerUpdateChannel:
+    destination: customerUpdates
+  customerDeletionChannel:
+    destination: customerDeletions
+
+  contactCreationChannel:
+    destination: contactCreations
+  contactUpdateChannel:
+    destination: contactUpdates
+  contactDeletionChannel:
+    destination: contactDeletions
+
+  productCreationChannel:
+    destination: productCreations
+  productUpdateChannel:
+    destination: productUpdates
+  productDeletionChannel:
+    destination: productDeletions
+
+#  spring.cloud.stream.bindings.customerCreationChannel.destination=customerCreations
+#  spring.cloud.stream.bindings.customerUpdateChannel.destination=customerUpdates
+#  spring.cloud.stream.bindings.customerDeletionChannel.destination=customerDeletions
+#
+#  spring.cloud.stream.bindings.contactCreationChannel.destination=contactCreations
+#  spring.cloud.stream.bindings.contactUpdateChannel.destination=contactUpdates
+#  spring.cloud.stream.bindings.contactDeletionChannel.destination=contactDeletions
+spring.cloud.stream.kafka.streams.binder:
+  brokers: localhost:9092
+  serdeError: logAndContinue
+  configuration:
+    commit.interval.ms: 500
+    default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+    default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+    spring.json.value.default.type: com.grp7.projectB.shareddomain.events.OrderEvent
