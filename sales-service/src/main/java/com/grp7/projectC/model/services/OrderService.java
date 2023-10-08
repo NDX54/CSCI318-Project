@@ -77,7 +77,7 @@ public class OrderService {
             ObjectNode updatedProductNode = productJsonNode.deepCopy();
             updatedProductNode.put("stock", productStockFromJson - orderQuantity);
 
-            restTemplate.put(customerURL + "/update-order-made-number/" + customerIdFromJson, null);
+            restTemplate.put(customerURL + "/add-order-made-number/" + customerIdFromJson, null);
             restTemplate.put(productURL + "/update/" + productIdFromJson, updatedProductNode);
 
             orderAggregate.setOrderId(new OrderId(orderIdStr));
@@ -170,7 +170,7 @@ public class OrderService {
             ObjectNode updatedProductNode = productJsonNode.deepCopy();
             updatedProductNode.put("stock", productStockFromJson + orderQuantity);
 
-//            restTemplate.put(customerURL + "/update-order-made-number/" + customerIdFromJson, null);
+            restTemplate.put(customerURL + "/subtract-order-made-number/" + customerIdFromJson, null);
             restTemplate.put(productURL + "/update/" + productIdFromJson, updatedProductNode);
 
             OrderEvent orderDeletedEvent = new OrderEvent();

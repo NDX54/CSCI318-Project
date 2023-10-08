@@ -60,9 +60,14 @@ public class CustomerController {
         return customerRepository.save(existingCustomerAggregate);
     }
 
-    @PutMapping("/update-order-made-number/{customerId}")
-    public void updateOrderMadeNumber(@PathVariable CustomerId customerId) {
-        customerService.updateCustomerOrderNumber(customerId);
+    @PutMapping("/add-order-made-number/{customerId}")
+    public void addOrderMadeNumber(@PathVariable CustomerId customerId) {
+        customerService.addCustomerOrderNumber(customerId);
+    }
+
+    @PutMapping("/subtract-order-made-number/{customerId}")
+    public void subtractOrderMadeNumber(@PathVariable CustomerId customerId) {
+        customerService.subtractCustomerOrderNumber(customerId);
     }
 
 

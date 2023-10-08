@@ -75,6 +75,8 @@ public class CustomerCreatedEvent {
 
     public Integer incrementOrdersMade() { return this.ordersMade++; }
 
+    public Integer decrementOrdersMade() { return this.ordersMade--; }
+
     public void setOrdersMade(Integer ordersMade) {
         this.ordersMade = ordersMade;
     }

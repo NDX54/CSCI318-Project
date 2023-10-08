@@ -53,7 +53,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public void updateCustomerOrderNumber(CustomerId customerId) {
+    public void addCustomerOrderNumber(CustomerId customerId) {
         CustomerAggregate customer = customerRepository.findCustomerByCustomerId(customerId).orElseThrow(EntityNotFoundException::new);
 
 //        Integer incrementedOrderMadeByCustomer = customer.getOrdersMade().incrementOrdersMade();
@@ -67,6 +67,28 @@ public class CustomerService {
         customerUpdatedEvent.setCustomerEmail(customer.getEmail().getAddress());
         customerUpdatedEvent.setCustomerPhoneNumber(customer.getPhone().getNumber());
         customerUpdatedEvent.incrementOrdersMade();
+        System.out.println("FROM updateCustomerOrderNumber: " + customerUpdatedEvent.getOrdersMade());
+
+        eventPublisher.publishEvent(customerUpdatedEvent);
+
+        customerRepository.save(customer);
+    }
+
+    @Transactional
+    public void subtractCustomerOrderNumber(CustomerId customerId) {
+        CustomerAggregate customer = customerRepository.findCustomerByCustomerId(customerId).orElseThrow(EntityNotFoundException::new);
+
+//        Integer incrementedOrderMadeByCustomer = customer.getOrdersMade().incrementOrdersMade();
+
+//        System.out.println("FROM updateCustomerOrderNumber: " + incrementedOrderMadeByCustomer);
+        customer.getOrdersMade().decrementOrdersMade();
+        CustomerCreatedEvent customerUpdatedEvent = new CustomerCreatedEvent();
+        customerUpdatedEvent.setEventName(CustomerCreatedEvent.CUSTOMER_UPDATED);
+        customerUpdatedEvent.setCustomerId(customer.getCustomerId().getCustomerId());
+        customerUpdatedEvent.setCustomerName(customer.getCompanyName());
+        customerUpdatedEvent.setCustomerEmail(customer.getEmail().getAddress());
+        customerUpdatedEvent.setCustomerPhoneNumber(customer.getPhone().getNumber());
+        customerUpdatedEvent.decrementOrdersMade();
         System.out.println("FROM updateCustomerOrderNumber: " + customerUpdatedEvent.getOrdersMade());
 
         eventPublisher.publishEvent(customerUpdatedEvent);
