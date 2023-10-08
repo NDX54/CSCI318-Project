@@ -3,6 +3,7 @@ package com.grp7.projectC.model.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.grp7.projectC.model.aggregates.CustomerId;
 import com.grp7.projectC.model.aggregates.OrderAggregate;
 import com.grp7.projectC.model.aggregates.OrderId;
@@ -47,9 +48,9 @@ public class OrderService {
         String orderIdStr = random.substring(0, random.indexOf("-"));
 
         final String customerURL = "http://localhost:8081/customers/";
-        final String productURL = "http://localhost:8082/products/get/";
+        final String productURL = "http://localhost:8082/products/";
         ResponseEntity<String> response1 = restTemplate.getForEntity(customerURL + customerId, String.class);
-        ResponseEntity<String> response2 = restTemplate.getForEntity(productURL + productId, String.class);
+        ResponseEntity<String> response2 = restTemplate.getForEntity(productURL + "/get/" + productId, String.class);
         String customerResponse = response1.getBody();
         String productResponse = response2.getBody();
 
@@ -60,16 +61,24 @@ public class OrderService {
             String customerIdFromJson = customerJsonNode.get("customerId").asText();
             String productIdFromJson = productJsonNode.get("productId").asText();
             String productNameFromJson = productJsonNode.get("name").asText();
+            Integer productStockFromJson = productJsonNode.get("stock").asInt();
 
 
             System.out.println(customerIdFromJson);
             System.out.println(productIdFromJson);
             System.out.println(productNameFromJson);
+            System.out.println(productStockFromJson);
 
             orderAggregate.setCustomerId(customerIdFromJson);
             orderAggregate.setProductId(productIdFromJson);
             orderAggregate.setProduct(productNameFromJson);
+
+            Integer orderQuantity = orderAggregate.getQuantity().getQuantity();
+            ObjectNode updatedProductNode = productJsonNode.deepCopy();
+            updatedProductNode.put("stock", productStockFromJson - orderQuantity);
+
             restTemplate.put(customerURL + "/update-order-made-number/" + customerIdFromJson, null);
+            restTemplate.put(productURL + "/update/" + productIdFromJson, updatedProductNode);
 
             orderAggregate.setOrderId(new OrderId(orderIdStr));
 
@@ -141,18 +150,44 @@ public class OrderService {
 
         OrderAggregate orderToDelete = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
 
-        OrderEvent orderDeletedEvent = new OrderEvent();
-        orderDeletedEvent.setEventName(OrderEvent.ORDER_DELETED);
-        orderDeletedEvent.setCustomerId(orderToDelete.getCustomerId());
-        orderDeletedEvent.setProductId(orderToDelete.getProductId());
-        orderDeletedEvent.setOrderId(orderToDelete.getOrderId().toString());
-        orderDeletedEvent.setSupplier(orderToDelete.getSupplier());
-        orderDeletedEvent.setProduct(orderToDelete.getProduct());
-        orderDeletedEvent.setQuantity(orderToDelete.getQuantity());
+        final String customerURL = "http://localhost:8081/customers/";
+        final String productURL = "http://localhost:8082/products/";
+        ResponseEntity<String> response1 = restTemplate.getForEntity(customerURL + orderToDelete.getCustomerId(), String.class);
+        ResponseEntity<String> response2 = restTemplate.getForEntity(productURL + "/get/" + orderToDelete.getProductId(), String.class);
+        String customerResponse = response1.getBody();
+        String productResponse = response2.getBody();
 
-        applicationEventPublisher.publishEvent(orderDeletedEvent);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode customerJsonNode = objectMapper.readTree(customerResponse);
+            JsonNode productJsonNode = objectMapper.readTree(productResponse);
+            String customerIdFromJson = customerJsonNode.get("customerId").asText();
+            String productIdFromJson = productJsonNode.get("productId").asText();
+            String productNameFromJson = productJsonNode.get("name").asText();
+            Integer productStockFromJson = productJsonNode.get("stock").asInt();
 
-        orderRepository.deleteByOrderId(orderId);
+            Integer orderQuantity = orderToDelete.getQuantity().getQuantity();
+            ObjectNode updatedProductNode = productJsonNode.deepCopy();
+            updatedProductNode.put("stock", productStockFromJson + orderQuantity);
+
+//            restTemplate.put(customerURL + "/update-order-made-number/" + customerIdFromJson, null);
+            restTemplate.put(productURL + "/update/" + productIdFromJson, updatedProductNode);
+
+            OrderEvent orderDeletedEvent = new OrderEvent();
+            orderDeletedEvent.setEventName(OrderEvent.ORDER_DELETED);
+            orderDeletedEvent.setCustomerId(orderToDelete.getCustomerId());
+            orderDeletedEvent.setProductId(orderToDelete.getProductId());
+            orderDeletedEvent.setOrderId(orderToDelete.getOrderId().toString());
+            orderDeletedEvent.setSupplier(orderToDelete.getSupplier());
+            orderDeletedEvent.setProduct(orderToDelete.getProduct());
+            orderDeletedEvent.setQuantity(orderToDelete.getQuantity());
+
+            applicationEventPublisher.publishEvent(orderDeletedEvent);
+
+            orderRepository.deleteByOrderId(orderId);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

@@ -1,25 +1,25 @@
 package com.grp7.projectC.model.valueobjects;
 
 import javax.persistence.Embeddable;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Objects;
 
 @Embeddable
 public class Quantity {
 
-    private int quantity;
+    private Integer quantity;
 
     // No-args constructor for JPA
-    protected Quantity() {
-    }
+    public Quantity() {}
 
-    public Quantity(int amount) {
-        if(amount < 0) {
+    public Quantity(int quantity) {
+        if(quantity < 0) {
             throw new IllegalArgumentException("Quantity cannot be negative");
         }
-        this.quantity = amount;
+        this.quantity = quantity;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 

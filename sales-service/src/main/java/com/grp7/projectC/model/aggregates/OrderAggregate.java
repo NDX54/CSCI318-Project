@@ -13,6 +13,7 @@ public class OrderAggregate {
 
     @Column
     private OrderId orderId; // Unique identifier for the OrderAggregate
+
     @Column
     private String customerId;
 
@@ -21,8 +22,10 @@ public class OrderAggregate {
 
     @Column
     private String supplier;
+
     @Column
     private String product;
+
     @Column
     private Quantity quantity;
 
@@ -93,5 +96,17 @@ public class OrderAggregate {
 
     public void setQuantity(Quantity quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderAggregate{" +
+                "orderId='" + orderId + '\'' +
+                ", productId='" + productId + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", product='" + product + '\'' +
+                ", supplier=" + supplier + '\'' +
+                ", quantity='" + quantity + '\'' +
+                '}';
     }
 }

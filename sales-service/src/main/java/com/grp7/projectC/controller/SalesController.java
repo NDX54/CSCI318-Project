@@ -36,8 +36,10 @@ public class SalesController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @PostMapping("/create-order/{customerId}/{productId}")
-    void create(@RequestBody OrderAggregate orderAggregate, @PathVariable CustomerId customerId, @PathVariable ProductId productId) {
+    ResponseEntity<String> create(@RequestBody OrderAggregate orderAggregate, @PathVariable CustomerId customerId, @PathVariable ProductId productId) {
         orderService.createOrder(orderAggregate, customerId, productId);
+
+        return new ResponseEntity<>("Created Order: " + orderAggregate, HttpStatus.OK);
     }
 
     @PutMapping("/update-order/{orderId}/product-id/{productId}")
@@ -47,6 +49,9 @@ public class SalesController {
                 ) { orderService.updateOrder(orderAggregate, orderId, productId); }
 
     @DeleteMapping("/delete/{orderId}")
-    void delete(@PathVariable OrderId orderId) { orderService.deleteOrder(orderId); }
+    ResponseEntity<String> delete(@PathVariable OrderId orderId) {
+        orderService.deleteOrder(orderId);
+        return new ResponseEntity<>("Deleted Order: " + orderId.toString(), HttpStatus.OK);
+    }
 
 }

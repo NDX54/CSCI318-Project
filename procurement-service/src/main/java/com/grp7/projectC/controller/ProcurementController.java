@@ -5,6 +5,8 @@ package com.grp7.projectC.controller;
 import com.grp7.projectC.model.aggregates.ProductAggregate;
 import com.grp7.projectC.model.aggregates.ProductId;
 import com.grp7.projectC.service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +22,23 @@ public class ProcurementController {
     }
 
     @PostMapping
-    void create(@RequestBody ProductAggregate newProductAggregate) { productService.createProduct(newProductAggregate); }
+    ResponseEntity<String> create(@RequestBody ProductAggregate newProductAggregate) {
+        productService.createProduct(newProductAggregate);
+        return new ResponseEntity<>("Created new product: " + newProductAggregate, HttpStatus.OK);
+    }
 
     @PutMapping("/update/{productId}")
-    void update(@PathVariable ProductId productId, @RequestBody ProductAggregate productAggregate) { productService.updateProduct(productId, productAggregate); }
+    ResponseEntity<String> update(@PathVariable ProductId productId, @RequestBody ProductAggregate productAggregate) {
+        productService.updateProduct(productId, productAggregate);
+        productAggregate.setProductId(productId);
+        return new ResponseEntity<>("Updated product: " + productAggregate, HttpStatus.OK);
+    }
 
     @DeleteMapping("/delete/{productId}")
-    void delete(@PathVariable ProductId productId) { productService.deleteProduct(productId); }
+    ResponseEntity<String>  delete(@PathVariable ProductId productId) {
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>("Deleted product: " + productId.toString(), HttpStatus.OK);
+    }
 
     @GetMapping
     List<ProductAggregate> allProducts() { return productService.getAllProducts(); }

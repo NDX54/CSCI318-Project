@@ -78,4 +78,17 @@ public class ProductAggregate extends AbstractAggregateRoot<ProductAggregate> {
     public Stock getStock() { return stock; }
 
     public void setStock(Stock stock) { this.stock = stock; }
+
+    @Override
+    public String toString() {
+        return "ProductAggregate{" +
+                "productId='" + productId + '\'' +
+                ", productCategory='" + productCategory + '\'' +
+                ", name='" + name.toString() + '\'' +
+                ", price='" + price.toString() + '\'' +
+                ", stock=" + stock.toString() +
+                ", description='" + description + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
 }

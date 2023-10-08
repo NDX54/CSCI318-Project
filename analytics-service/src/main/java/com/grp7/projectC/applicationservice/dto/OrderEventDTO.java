@@ -71,11 +71,11 @@ public class OrderEventDTO {
     @Override
     public String toString() {
         return "OrderEventDTO{" +
-                "event_name='" + eventName + '\'' +
-                ", customer_id='" + customerId + '\'' +
-                " supplier=" + supplier +
+                "eventName='" + eventName + '\'' +
+                ", orderId='" + orderId + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", supplier=" + supplier +
                 ", quantity='" + quantity + '\'' +
-                ", order_id='" + orderId + '\'' +
                 '}';
     }
 }

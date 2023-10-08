@@ -5,7 +5,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class OrdersMade {
 
-    private Integer ordersMade;
+    // By default, all customers will have 0 orders made.
+    private Integer ordersMade = 0;
 
     public OrdersMade() {}
 

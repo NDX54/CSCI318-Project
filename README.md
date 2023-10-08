@@ -83,7 +83,7 @@ CustomerID, ProductID, and OrderID are randomly generated. Please copy the respe
 ### Create a Customer
 
 ```shell
-curl -X POST -H "Content-Type: application/json" -d "{\"companyName\": \"Example Company\",\"address\": {\"streetAddress\": \"123 Main Street\",\"city\": \"Cityville\",\"postalCode\": \"12345\",\"country\": \"Countryland\"},\"email\": {\"address\":\"customer@example.com\"},\"phone\": {\"number\": \"123-456-7890\"}}" http://localhost:8081/customers
+curl -X POST -H "Content-Type: application/json" -d "{\"companyName\": \"Example Company\",\"address\": {\"streetAddress\": \"123 Main Street\",\"city\": \"Cityville\",\"postalCode\": \"12345\",\"country\": \"Countryland\"},\"email\": {\"address\":\"customer@example.com\"},\"number\":\"123-456-7890\"}" http://localhost:8081/customers
 ```
 
 ### Create a Contact
@@ -95,7 +95,7 @@ curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"John Doe\", \"
 ### Update a Customer
 
 ```shell
-curl -X PUT -H "Content-Type: application/json" -d "{\"companyName\": \"Example Company\",\"address\": {\"streetAddress\": \"123 Main Street\",\"city\": \"Cityville\",\"postalCode\": \"12345\",\"country\": \"Countryland\"},\"email\": {\"address\":\"customer@example.com\"},\"phone\": {\"number\": \"123-456-7890\"}}" http://localhost:8081/customers/update/CUSTOMER_ID_HERE
+curl -X PUT -H "Content-Type: application/json" -d "{\"companyName\": \"Example Company\",\"address\": {\"streetAddress\": \"123 Main Street\",\"city\": \"Cityville\",\"postalCode\": \"12345\",\"country\": \"Countryland\"},\"email\": {\"address\":\"customer@example.com\"},\"number\": \"123-456-7890\"}" http://localhost:8081/customers/update/CUSTOMER_ID_HERE
 ```
 
 ### Update a Contact

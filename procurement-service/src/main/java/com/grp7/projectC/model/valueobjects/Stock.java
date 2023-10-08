@@ -23,7 +23,6 @@ public class Stock {
 
     @Override
     public String toString() {
-        return ", stock=" + stock +
-                ',';
+        return stock.toString();
     }
 }

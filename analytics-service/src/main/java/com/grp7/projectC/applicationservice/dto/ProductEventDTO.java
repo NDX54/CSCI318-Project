@@ -75,14 +75,14 @@ public class ProductEventDTO {
     @Override
     public String toString() {
         return "ProductEventDTO{" +
-                "event_name='" + eventName + '\'' +
-                ", product_category='" + productCategory + '\'' +
+                "eventName='" + eventName + '\'' +
+                ", productId='" + productId + '\'' +
+                ", productCategory='" + productCategory + '\'' +
                 ", name='" + productName + '\'' +
                 ", price='" + productPrice + '\'' +
                 ", stock=" + stock.toString() + ' ' +
                 ", description='" + description + '\'' +
                 ", comment='" + comment + '\'' +
-                ", product_id='" + productId + '\'' +
                 '}';
     }
 }

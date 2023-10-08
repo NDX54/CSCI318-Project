@@ -68,12 +68,13 @@ public class CustomerEventDTO {
 
     @Override
     public String toString() {
-        return "CustomerEventDTO{customerId='" + customerId + '\'' +
+        return "CustomerEventDTO{" +
+                "eventName='" + eventName + '\'' +
+                ", customerId='" + customerId + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
                 ", customerPhoneNumber='" + customerPhoneNumber + '\'' +
                 ", numberOfOrdersMade=" + ordersMade +
-                ", eventName='" + eventName + '\'' +
                 '}';
     }
 }

@@ -91,6 +91,33 @@ public class ProductService {
         applicationEventPublisher.publishEvent(productEvent);
     }
 
+//    @Transactional
+//    public void updateProductStock(ProductId productId, ProductAggregate productAggregate) {
+//        ProductAggregate existingProductAggregate = productRepository.findByProductId(productId).orElseThrow(EntityNotFoundException::new);
+//        existingProductAggregate.setProductCategory(productAggregate.getProductCategory());
+//        existingProductAggregate.setName(productAggregate.getName());
+//        existingProductAggregate.setPrice(productAggregate.getPrice());
+//        existingProductAggregate.setDescription(productAggregate.getDescription());
+//        existingProductAggregate.setComment(productAggregate.getComment());
+//        existingProductAggregate.setStock(productAggregate.getStock());
+//
+//        productRepository.save(existingProductAggregate);
+//
+//
+//        ProductEvent productEvent = new ProductEvent();
+//
+//        productEvent.setEventName(ProductEvent.PRODUCT_UPDATED);
+//        productEvent.setProductId(productId);
+//        productEvent.setProductCategory(productAggregate.getProductCategory());
+//        productEvent.setProductName(productAggregate.getName());
+//        productEvent.setProductPrice(productAggregate.getPrice());
+//        productEvent.setDescription(productAggregate.getDescription());
+//        productEvent.setComment(productAggregate.getComment());
+//        productEvent.setStock(productAggregate.getStock());
+//
+//        applicationEventPublisher.publishEvent(productEvent);
+//    }
+
     @Transactional
     public void deleteProduct(ProductId productId) {
         ProductAggregate productToDelete = productRepository.findByProductId(productId).orElseThrow(EntityNotFoundException::new);

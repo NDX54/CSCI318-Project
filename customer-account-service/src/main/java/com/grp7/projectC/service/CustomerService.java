@@ -35,7 +35,7 @@ public class CustomerService {
         String random = UUID.randomUUID().toString().toUpperCase();
         String customerIdStr = random.substring(0, random.indexOf("-"));
         customerAggregate.setCustomerId(new CustomerId(customerIdStr));
-        customerAggregate.getOrdersMade().setOrdersMade(0);
+//        customerAggregate.getOrdersMade().setOrdersMade(0);
         customerRepository.save(customerAggregate);
 
         // 2. CustomerCreatedEvent 이벤트를 생성합니다.
