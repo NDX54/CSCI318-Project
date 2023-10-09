@@ -23,7 +23,8 @@
 		<module>customer-account-service</module>
 		<module>procurement-service</module>
 		<module>sales-service</module>
-	</modules>
+        <module>custom-exception-handler</module>
+    </modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -66,6 +67,11 @@
 			<scope>test</scope>
 			<classifier>test-binder</classifier>
 			<type>test-jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.grp7.projectC</groupId>
+			<artifactId>custom-exception-handler</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

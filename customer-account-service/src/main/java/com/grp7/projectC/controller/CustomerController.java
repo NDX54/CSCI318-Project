@@ -5,6 +5,7 @@ import com.grp7.projectC.model.aggregates.CustomerId;
 import com.grp7.projectC.model.entities.Contact;
 import com.grp7.projectC.repository.ContactRepository;
 import com.grp7.projectC.repository.CustomerRepository;
+import com.grp7.projectC.service.ContactService;
 import org.springframework.web.bind.annotation.*;
 import com.grp7.projectC.service.CustomerService;
 
@@ -15,11 +16,14 @@ public class CustomerController {
 
     private final CustomerRepository customerRepository;
     private final ContactRepository contactRepository;
+
+    private final ContactService contactService;
     private final CustomerService customerService;
 
-    public CustomerController(CustomerRepository customerRepository, ContactRepository contactRepository, CustomerService customerService) {
+    public CustomerController(CustomerRepository customerRepository, ContactRepository contactRepository, ContactService contactService, CustomerService customerService) {
         this.customerRepository = customerRepository;
         this.contactRepository = contactRepository;
+        this.contactService = contactService;
         this.customerService = customerService;
     }
 
@@ -37,7 +41,7 @@ public class CustomerController {
 
     @PutMapping("/update/{customerId}")
     public CustomerAggregate updateCustomer(@PathVariable CustomerId customerId, @RequestBody CustomerAggregate updatedCustomerAggregate) {
-        CustomerAggregate existingCustomerAggregate = customerRepository.findCustomerByCustomerId(customerId)
+        CustomerAggregate existingCustomerAggregate = customerRepository.findByCustomerId(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // 본문에서 필요한 로직을 추가하세요.
@@ -77,10 +81,10 @@ public class CustomerController {
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // 중복된 연락처 검사
-        boolean isContactExists = customerAggregate.getContacts().stream()
+        boolean contactExists = customerAggregate.getContacts().stream()
                 .anyMatch(existingContact -> existingContact.getEmail().equals(contact.getEmail()));
 
-        if (isContactExists) {
+        if (contactExists) {
             throw new RuntimeException("Contact already exists");
         }
 
@@ -91,38 +95,18 @@ public class CustomerController {
     }
 
     @PutMapping("/{customerId}/contacts/{contactId}")
-    public Contact updateCustomerContact(
-            @PathVariable Long customerId,
+    public void updateCustomerContact(
+            @PathVariable CustomerId customerId,
             @PathVariable Long contactId,
             @RequestBody Contact updatedContact
     ) {
-        CustomerAggregate customerAggregate = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        // 본문에서 필요한 로직을 추가하세요.
-
-        // 예시: 본문에서 필요한 로직을 추가한 예시
-        Contact contactToUpdate = customerAggregate.getContacts().stream()
-                .filter(contact -> contact.getId() == contactId)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Contact not found"));
-
-        contactToUpdate.setName(updatedContact.getName());
-        contactToUpdate.setPhone(updatedContact.getPhone());
-        contactToUpdate.setEmail(updatedContact.getEmail());
-        contactToUpdate.setPosition(updatedContact.getPosition());
-
-        return contactRepository.save(contactToUpdate);
+        customerService.updateCustomerContact(customerId,contactId,updatedContact);
     }
 
     @GetMapping
-    public List<CustomerAggregate> getAllCustomers() {
-        return customerRepository.findAll();
-    }
+    public List<CustomerAggregate> getAllCustomers() { return customerService.getAllCustomers(); }
 
     @GetMapping("/{customerId}")
-    public CustomerAggregate getCustomerById(@PathVariable CustomerId customerId) {
-        return customerRepository.findCustomerByCustomerId(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-    }
+    public CustomerAggregate getCustomerById(@PathVariable CustomerId customerId) { return customerService.findCustomer(customerId);}
 }

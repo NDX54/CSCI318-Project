@@ -1,5 +1,6 @@
 package com.grp7.projectC.service;
 
+import com.grp7.projectC.model.aggregates.CustomerId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.grp7.projectC.model.aggregates.CustomerAggregate;
@@ -11,6 +12,7 @@ import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ContactService {
@@ -46,6 +48,10 @@ public class ContactService {
     @Transactional
     public void createContact(Contact contact, Long customerId) {
         // 연락처(Contact) 객체 생성
+        String random = UUID.randomUUID().toString().toUpperCase();
+        String contactIdStr = random.substring(0, random.indexOf("-"));
+//        customerAggregate.setCustomerId(new CustomerId(customerIdStr));
+
         Contact newContact = new Contact();
         newContact.setName(contact.getName());
         newContact.setEmail(contact.getEmail());
