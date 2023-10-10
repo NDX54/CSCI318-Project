@@ -40,28 +40,29 @@ public class CustomerController {
     }
 
     @PutMapping("/update/{customerId}")
-    public CustomerAggregate updateCustomer(@PathVariable CustomerId customerId, @RequestBody CustomerAggregate updatedCustomerAggregate) {
-        CustomerAggregate existingCustomerAggregate = customerRepository.findByCustomerId(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    public void updateCustomer(@PathVariable CustomerId customerId, @RequestBody CustomerAggregate updatedCustomerAggregate) {
+        customerService.updateCustomer(customerId, updatedCustomerAggregate);
+//        CustomerAggregate existingCustomerAggregate = customerRepository.findByCustomerId(customerId)
+//                .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // 본문에서 필요한 로직을 추가하세요.
 
         // 예시: 본문에서 필요한 로직을 추가한 예시
-        existingCustomerAggregate.setCompanyName(updatedCustomerAggregate.getCompanyName());
-        existingCustomerAggregate.setAddress(updatedCustomerAggregate.getAddress());
+//        existingCustomerAggregate.setCompanyName(updatedCustomerAggregate.getCompanyName());
+//        existingCustomerAggregate.setAddress(updatedCustomerAggregate.getAddress());
         // ...
 
         // Contact 엔터티를 업데이트합니다.
-        for (Contact updatedContact : updatedCustomerAggregate.getContacts()) {
-            Contact existingContact = contactRepository.findById(updatedContact.getId()).orElseThrow();
-            existingContact.setName(updatedContact.getName());
-            existingContact.setPhone(updatedContact.getPhone());
-            existingContact.setEmail(updatedContact.getEmail());
-            existingContact.setPosition(updatedContact.getPosition());
-            contactRepository.save(existingContact);
-        }
+//        for (Contact updatedContact : updatedCustomerAggregate.getContacts()) {
+//            Contact existingContact = contactRepository.findById(updatedContact.getId()).orElseThrow();
+//            existingContact.setName(updatedContact.getName());
+//            existingContact.setPhone(updatedContact.getPhone());
+//            existingContact.setEmail(updatedContact.getEmail());
+//            existingContact.setPosition(updatedContact.getPosition());
+//            contactRepository.save(existingContact);
+//        }
 
-        return customerRepository.save(existingCustomerAggregate);
+//        return customerRepository.save(existingCustomerAggregate);
     }
 
     @PutMapping("/add-order-made-number/{customerId}")

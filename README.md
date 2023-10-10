@@ -89,7 +89,7 @@ curl -X POST -H "Content-Type: application/json" -d "{\"companyName\": \"Example
 ### Create a Contact
 
 ```shell
-curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"John Doe\", \"email\": \"john.doe@example.com\", \"phone\": \"999-999-9999\", \"position\": \"Manager\"}" http://localhost:8081/contacts/?customerId=1
+curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"John Doe\", \"email\": \"john.doe@example.com\", \"phone\": \"999-999-9999\", \"position\": \"Manager\"}" http://localhost:8081/contacts/?customerId=CUSTOMER_ID_HERE
 ```
 
 ### Update a Customer
@@ -100,7 +100,9 @@ curl -X PUT -H "Content-Type: application/json" -d "{\"companyName\": \"Example 
 
 ### Update a Contact
 
-For updating the contact, use the Long ID for both CustomerID and ContactID
+~~For updating the contact, use the Long ID for both CustomerID~~ and ContactID.
+
+You can now use the randomly generated CustomerID to update the contact. You still need to use the Long ID for contactID.
 
 ```shell
 curl -X PUT -H "Content-Type: application/json" -d "{\"name\": \"Mari Doe\", \"email\": \"mardoe@example.com\", \"phone\": \"992349523952539\", \"position\": \"Doggerr\"}" http://localhost:8081/customers/CUSTOMER_ID_HERE/contacts/CONTACT_ID_HERE
@@ -117,15 +119,15 @@ curl http://localhost:8081/customers/CUSTOMER_ID_TO_LOOKUP_HERE
 ### Create Product
 
 ```shell
-curl -X POST -H "Content-Type: application/json" -d "{\"description\":\"Ratatouille\",\"comment\":\"Yun food\",\"productCategory\":\"Foods\",\"name\":\"Ratatoy\",\"price\":9999.99}" http://localhost:8082/products
-curl -X POST -H "Content-Type: application/json" -d "{\"description\":\"XLR Microphone\",\"comment\":\"WOW\",\"productCategory\":\"Audio\",\"name\":\"RTMic\",\"price\":1299.99}" http://localhost:8082/products
+curl -X POST -H "Content-Type: application/json" -d "{\"description\":\"Ratatouille\",\"comment\":\"Yun food\",\"productCategory\":\"Foods\",\"name\":\"Ratatoy\",\"price\":9999.99,\"stock\":100}" http://localhost:8082/products
+curl -X POST -H "Content-Type: application/json" -d "{\"description\":\"XLR Microphone\",\"comment\":\"WOW\",\"productCategory\":\"Audio\",\"name\":\"RTMic\",\"price\":1299.99,\"stock\":1000}" http://localhost:8082/products
 ```
 
 ### Update a Product
 
 ```shell
-curl -X PUT -H "Content-Type: application/json" -d "{\"productCategory\":\"Tools\",\"name\":\"Drill\",\"price\":339.99}" http://localhost:8082/products/update/PRODUCT_ID_TO_UPDATE_HERE
-curl -X PUT -H "Content-Type: application/json" -d "{\"description\":\"High-quality drill\",\"comment\":\"Drill it in\",\"productCategory\":\"Tools\",\"name\":\"Drill\",\"price\":339.99}" http://localhost:8082/products/PRODUCT_ID_TO_UPDATE_HERE
+curl -X PUT -H "Content-Type: application/json" -d "{\"productCategory\":\"Tools\",\"name\":\"Drill\",\"price\":339.99,\"stock\":350}" http://localhost:8082/products/update/PRODUCT_ID_TO_UPDATE_HERE
+curl -X PUT -H "Content-Type: application/json" -d "{\"description\":\"High-quality drill\",\"comment\":\"Drill it in\",\"productCategory\":\"Tools\",\"name\":\"Drill\",\"price\":339.99,\"stock\":200}" http://localhost:8082/products/PRODUCT_ID_TO_UPDATE_HERE
 ```
 
 ### Delete a Product

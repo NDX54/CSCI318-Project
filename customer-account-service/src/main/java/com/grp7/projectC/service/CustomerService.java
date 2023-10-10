@@ -130,7 +130,7 @@ public class CustomerService {
 //    }
 
     @Transactional
-    public CustomerAggregate updateCustomer(CustomerId customerId, CustomerAggregate updatedCustomerAggregate) {
+    public void updateCustomer(CustomerId customerId, CustomerAggregate updatedCustomerAggregate) {
         CustomerAggregate existingCustomer = customerRepository.findByCustomerId(customerId).orElseThrow(() -> new CustomNotFoundException("Customer not found"));
 
         existingCustomer.setCompanyName(updatedCustomerAggregate.getCompanyName());
@@ -152,7 +152,7 @@ public class CustomerService {
 
         eventPublisher.publishEvent(customerUpdatedEvent);
 
-        return customerRepository.save(existingCustomer);
+        customerRepository.save(existingCustomer);
     }
 
     public void updateCustomerContact(CustomerId customerId, Long contactId, Contact updatedContact) {
