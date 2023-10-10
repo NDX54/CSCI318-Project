@@ -102,7 +102,7 @@ curl -X PUT -H "Content-Type: application/json" -d "{\"companyName\": \"Example 
 
 ~~For updating the contact, use the Long ID for both CustomerID~~ and ContactID.
 
-You can now use the randomly generated CustomerID to update the contact. You still need to use the Long ID for contactID.
+You can now use the randomly generated CustomerID to update the contact. You still need to use the Long ID for ContactID.
 
 ```shell
 curl -X PUT -H "Content-Type: application/json" -d "{\"name\": \"Mari Doe\", \"email\": \"mardoe@example.com\", \"phone\": \"992349523952539\", \"position\": \"Doggerr\"}" http://localhost:8081/customers/CUSTOMER_ID_HERE/contacts/CONTACT_ID_HERE
