@@ -1,6 +1,6 @@
 package com.grp7.projectC.service;
 
-import com.grp7.projectC.CustomNotFoundException;
+import com.grp7.projectC.NotFoundException;
 import com.grp7.projectC.model.entities.Contact;
 import com.grp7.projectC.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class CustomerService {
 
     @Transactional
     public void addCustomerOrderNumber(CustomerId customerId) {
-        CustomerAggregate customer = customerRepository.findByCustomerId(customerId).orElseThrow(() -> new CustomNotFoundException("Customer not found"));
+        CustomerAggregate customer = customerRepository.findByCustomerId(customerId).orElseThrow(() -> new NotFoundException("Customer not found"));
 
 //        Integer incrementedOrderMadeByCustomer = customer.getOrdersMade().incrementOrdersMade();
 
@@ -81,7 +81,7 @@ public class CustomerService {
 
     @Transactional
     public void subtractCustomerOrderNumber(CustomerId customerId) {
-        CustomerAggregate customer = customerRepository.findByCustomerId(customerId).orElseThrow(() -> new CustomNotFoundException("Customer not found"));
+        CustomerAggregate customer = customerRepository.findByCustomerId(customerId).orElseThrow(() -> new NotFoundException("Customer not found"));
 
 //        Integer incrementedOrderMadeByCustomer = customer.getOrdersMade().incrementOrdersMade();
 
@@ -131,7 +131,7 @@ public class CustomerService {
 
     @Transactional
     public void updateCustomer(CustomerId customerId, CustomerAggregate updatedCustomerAggregate) {
-        CustomerAggregate existingCustomer = customerRepository.findByCustomerId(customerId).orElseThrow(() -> new CustomNotFoundException("Customer not found"));
+        CustomerAggregate existingCustomer = customerRepository.findByCustomerId(customerId).orElseThrow(() -> new NotFoundException("Customer not found"));
 
         existingCustomer.setCompanyName(updatedCustomerAggregate.getCompanyName());
         existingCustomer.setAddress(updatedCustomerAggregate.getAddress());
@@ -157,7 +157,7 @@ public class CustomerService {
 
     public void updateCustomerContact(CustomerId customerId, Long contactId, Contact updatedContact) {
         CustomerAggregate customerAggregate = customerRepository.findByCustomerId(customerId)
-                .orElseThrow(() -> new CustomNotFoundException("Customer not found"));
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
 
         // 본문에서 필요한 로직을 추가하세요.
 
@@ -165,7 +165,7 @@ public class CustomerService {
         Contact contactToUpdate = customerAggregate.getContacts().stream()
                 .filter(contact -> contact.getId() == contactId)
                 .findFirst()
-                .orElseThrow(() -> new CustomNotFoundException("Contact not found"));
+                .orElseThrow(() -> new NotFoundException("Contact not found"));
 
         contactToUpdate.setName(updatedContact.getName());
         contactToUpdate.setPhone(updatedContact.getPhone());
@@ -181,7 +181,7 @@ public class CustomerService {
 
     public CustomerAggregate findCustomer(CustomerId customerId) {
         return customerRepository.findByCustomerId(customerId)
-                .orElseThrow(() -> new CustomNotFoundException("Customer not found"));
+                .orElseThrow(() -> new NotFoundException("Customer not found"));
     }
 
     // 다른 비즈니스 로직 메서드를 추가할 수 있습니다.

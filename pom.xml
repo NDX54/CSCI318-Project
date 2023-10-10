@@ -23,7 +23,6 @@
 		<module>customer-account-service</module>
 		<module>procurement-service</module>
 		<module>sales-service</module>
-        <module>custom-exception-handler</module>
     </modules>
 	<dependencies>
 		<dependency>
@@ -69,9 +68,10 @@
 			<type>test-jar</type>
 		</dependency>
 		<dependency>
-			<groupId>com.grp7.projectC</groupId>
-			<artifactId>custom-exception-handler</artifactId>
+			<groupId>com.grp7</groupId>
+			<artifactId>projectC</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

@@ -17,6 +17,8 @@ public class StreamProcessor {
 
     public final static String CUSTOMER_STATE_STORE = "customers";
 
+    public final static String PRODUCT_STATE_STORE = "products";
+
     @Bean
     public Consumer<KStream<String, CustomerEventDTO>> processOrderCreation() {
 
@@ -32,21 +34,5 @@ public class StreamProcessor {
             aggregatedStream.print(Printed.<String, Long>toSysOut().withLabel("Total number of orders made by customerID"));
         };
     }
-
-//    @Bean
-//    public Consumer<KStream<String, OrderEvent>> processOrderDeletion() {
-//
-//        return inputStream -> {
-//            KStream<String, Long> aggregatedStream = inputStream.map((key, value) -> {
-//                        String productID = value.getOrderEventData().getProductId();
-//                        Long orderQuantity = value.getOrderEventData().getQuantity().longValue();
-//                        return KeyValue.pair(productID, orderQuantity);
-//                    }).
-//                    groupByKey(Grouped.with(Serdes.String(), Serdes.Long())).
-//                    reduce(Long::sum).toStream();
-//
-//            aggregatedStream.print(Printed.<String, Long>toSysOut().withLabel("Total quantity by productID"));
-//        };
-//    }
 
 }

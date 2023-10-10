@@ -1,7 +1,7 @@
 package com.grp7.projectC;
 
-public class CustomNotFoundException extends RuntimeException {
-    public CustomNotFoundException(String message) {
+public class NotFoundException extends RuntimeException {
+    public NotFoundException(String message) {
         super(message);
     }
 
