@@ -9,39 +9,46 @@ import com.grp7.projectC.model.valueobjects.Email;
 import com.grp7.projectC.model.entities.Address;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class CustomerAggregate extends AbstractAggregateRoot<CustomerAggregate> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // 자동 생성 설정
-    private Long id; // 자동 생성되는 customerId
-
-    @Column
-    private String companyName;
-
-    @Embedded
+    @EmbeddedId
     @Column(name = "customer_id")
+    @Valid
     @JsonUnwrapped
     private CustomerId customerId;
 
+    @Column
+    @Valid
+    @NotBlank(message = "Company name must not be blank")
+    private String companyName;
+
     @Embedded
     @Column(name = "address")
+    @Valid
     private Address address;
 
     @Embedded
     @Column(name = "email")
+    @Valid
     private Email email;
 
     @Embedded
     @Column(name = "phone_number")
+    @Valid
     @JsonUnwrapped
     private Phone phone;
 
     @Embedded
     @Column
+    @Valid
     @JsonUnwrapped
     private OrdersMade ordersMade;
 
@@ -49,14 +56,6 @@ public class CustomerAggregate extends AbstractAggregateRoot<CustomerAggregate> 
     private List<Contact> contacts = new ArrayList<>();
 
     public CustomerAggregate() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long customerId) {
-        this.id = customerId;
-    }
 
 
     public CustomerId getCustomerId() {

@@ -2,10 +2,12 @@ package com.grp7.projectC.model.valueobjects;
 
 import javax.persistence.Embeddable;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.validation.constraints.Min;
 import java.util.Objects;
 
 @Embeddable
 public class Quantity {
+
 
     private Integer quantity;
 

@@ -23,6 +23,7 @@
 		<module>customer-account-service</module>
 		<module>procurement-service</module>
 		<module>sales-service</module>
+        <module>custom-api-response</module>
     </modules>
 	<dependencies>
 		<dependency>
@@ -68,10 +69,18 @@
 			<type>test-jar</type>
 		</dependency>
 		<dependency>
-			<groupId>com.grp7</groupId>
-			<artifactId>projectC</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
+			<groupId>org.javatuples</groupId>
+			<artifactId>javatuples</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.2.5.Final</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -85,6 +94,21 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>https://repo1.maven.org/maven2/</url>
+		</repository>
+<!--		<repository>-->
+<!--			<id>sonatype</id>-->
+<!--			<url>https://repository.sonatype.org/content/groups/public/</url>-->
+<!--		</repository>-->
+<!--		<repository>-->
+<!--			<id></id>-->
+<!--			<url></url>-->
+<!--		</repository>-->
+	</repositories>
 
 	<build>
 		<plugins>

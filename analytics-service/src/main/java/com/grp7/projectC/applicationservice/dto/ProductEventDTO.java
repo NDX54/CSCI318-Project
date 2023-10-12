@@ -80,7 +80,7 @@ public class ProductEventDTO {
                 ", productCategory='" + productCategory + '\'' +
                 ", name='" + productName + '\'' +
                 ", price='" + productPrice + '\'' +
-                ", stock=" + stock.toString() + ' ' +
+                ", stock=" + stock + ' ' +
                 ", description='" + description + '\'' +
                 ", comment='" + comment + '\'' +
                 '}';

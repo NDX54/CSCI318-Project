@@ -20,18 +20,23 @@
 
     <dependencies>
 <!--         Project Dependencies-->
-        <dependency>
-            <groupId>com.grp7</groupId>
-            <artifactId>customer-account-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.grp7</groupId>-->
+<!--            <artifactId>customer-account-service</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.grp7</groupId>-->
+<!--            <artifactId>procurement-service</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--        </dependency>-->
 
         <dependency>
-            <groupId>com.grp7</groupId>
-            <artifactId>procurement-service</artifactId>
+            <groupId>com.grp7.projectC</groupId>
+            <artifactId>custom-api-response</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
         <!-- Spring Boot Web Starter for REST API -->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.boot</groupId>-->

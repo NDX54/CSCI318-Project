@@ -1,10 +1,13 @@
 package com.grp7.projectC.model.valueobjects;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 public class Stock {
 
+    @Min(value = 0, message = "Product's stock must be equal or greater than 0")
     private Integer stock;
 
     public Stock() {}

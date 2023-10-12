@@ -1,22 +1,32 @@
 package com.grp7.projectC.model.entities;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grp7.projectC.model.aggregates.CustomerAggregate;
 
 @Entity
 public class Contact {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "contact_id")
+    private String contactId;
+
     @Column(name = "name")
+    @NotBlank(message = "Name cannot be blank")
     private String name;
+
     @Column(name = "phone")
+    @NotBlank(message = "Phone cannot be blank")
     private String phone;
 
     @Column(name = "email")
+    @NotBlank(message = "Email cannot be blank")
     private String email;
 
     @Column(name = "position")
+    @NotBlank(message = "Position cannot be blank")
     private String position;
 
     @JsonIgnore
@@ -24,11 +34,10 @@ public class Contact {
     @JoinColumn(name = "customer_id")
     private CustomerAggregate customer;
 
-    public Contact() {
-    }
+    public Contact() {}
 
-    public Contact(long id, String name, String phone, String email, String position, CustomerAggregate customer) {
-        this.id = id;
+    public Contact(String contactId, String name, String phone, String email, String position, CustomerAggregate customer) {
+        this.contactId = contactId;
         this.name = name;
         this.phone = phone;
         this.email = email;
@@ -36,12 +45,12 @@ public class Contact {
         this.customer = customer;
     }
 
-    public long getId() {
-        return id;
+    public String getContactId() {
+        return contactId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
     }
 
     public String getName() {

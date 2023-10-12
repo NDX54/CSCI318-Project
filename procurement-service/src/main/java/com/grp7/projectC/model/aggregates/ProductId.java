@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 @Embeddable
 public class ProductId implements Serializable {
-
-
     private String productId;
 
     public ProductId() {}

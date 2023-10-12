@@ -1,12 +1,12 @@
 package com.grp7.projectC.controller;
 
-import com.grp7.projectC.model.aggregates.CustomerId;
 import com.grp7.projectC.model.valueobjects.Quantity;
 
 public class OrderDTO {
 
     private String orderId;
-    private CustomerId customerId;
+    private String customerId;
+    private String productId;
     private String supplier;
     private String product;
     private Quantity quantity;
@@ -15,9 +15,10 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    public OrderDTO(String orderId, CustomerId customerId, String supplier, String product, Quantity quantity) {
+    public OrderDTO(String orderId, String customerId, String productId, String supplier, String product, Quantity quantity) {
         this.orderId = orderId;
         this.customerId = customerId;
+        this.productId = productId;
         this.supplier = supplier;
         this.product = product;
         this.quantity = quantity;
@@ -33,12 +34,20 @@ public class OrderDTO {
         this.orderId = orderId;
     }
 
-    public CustomerId getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(CustomerId customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getSupplier() {

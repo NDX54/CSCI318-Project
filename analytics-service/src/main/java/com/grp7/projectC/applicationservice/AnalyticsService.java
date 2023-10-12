@@ -37,19 +37,19 @@ public class AnalyticsService {
                 customerEventDTO + "****"
         );
     }
-//
-//    @StreamListener(AnalyticsSource.ORDER_DELETION_INPUT)
-//    public void receiveOrderDeletedEvent(OrderEventDTO orderEventDTO) {
-//
-//        if (orderEventDTO == null) {
-//            System.out.println("ERROR: Received null orderEventDTO");
-//            return;
-//        }
-//
-//        System.out.println("****READING FROM KAFKA TOPIC orderDeletions: " +
-//                orderEventDTO + "****"
-//        );
-//    }
+
+    @StreamListener(AnalyticsSource.CUSTOMER_DELETION_INPUT)
+    public void receiveCustomerDeletedEvent(CustomerEventDTO customerEventDTO) {
+
+        if (customerEventDTO == null) {
+            System.out.println("ERROR: Received null CustomerEventDTO");
+            return;
+        }
+
+        System.out.println("****READING FROM KAFKA TOPIC customerDeletions: " +
+                customerEventDTO + "****"
+        );
+    }
 
     @StreamListener(AnalyticsSource.PRODUCT_CREATION_INPUT)
     public void receiveProductCreatedEvent(ProductEventDTO productEventDTO) {

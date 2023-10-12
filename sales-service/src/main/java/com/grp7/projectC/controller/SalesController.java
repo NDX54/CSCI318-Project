@@ -1,14 +1,15 @@
 package com.grp7.projectC.controller;
 
-import com.grp7.projectC.model.aggregates.CustomerId;
-import com.grp7.projectC.model.aggregates.ProductId;
+import com.grp7.projectC.customresponses.APIResponse;
 import com.grp7.projectC.model.aggregates.OrderAggregate;
 import com.grp7.projectC.model.aggregates.OrderId;
 import com.grp7.projectC.model.services.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,29 +30,39 @@ public class SalesController {
     }
 
     // Get a specific order
-    @GetMapping("/{orderId}")
-    ResponseEntity<OrderAggregate> getOrder(@PathVariable OrderId orderId) {
+    @GetMapping("/get")
+    ResponseEntity<OrderAggregate> getOrder(@RequestParam("orderId") OrderId orderId) {
         return orderService.getOrderById(orderId)
                 .map(order -> new ResponseEntity<>(order, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-    @PostMapping("/create-order/{customerId}/{productId}")
-    ResponseEntity<String> create(@RequestBody OrderAggregate orderAggregate, @PathVariable CustomerId customerId, @PathVariable ProductId productId) {
-        orderService.createOrder(orderAggregate, customerId, productId);
 
-        return new ResponseEntity<>("Created Order: " + orderAggregate, HttpStatus.OK);
+    @PostMapping("/create-order")
+    ResponseEntity<APIResponse<OrderAggregate>> create(@RequestBody OrderAggregate orderAggregate, @RequestParam("customerId") String customerId,
+                                  @RequestParam("productId") String productId, WebRequest request) {
+        OrderAggregate newOrder = orderService.createOrder(orderAggregate, customerId, productId);
+
+        APIResponse<OrderAggregate> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Order created successfully");
+        response.setDetails(newOrder);
+        response.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @PutMapping("/update-order/{orderId}/product-id/{productId}")
-    void update(@RequestBody OrderAggregate orderAggregate,
-                @PathVariable OrderId orderId,
-                @PathVariable ProductId productId
-                ) { orderService.updateOrder(orderAggregate, orderId, productId); }
-
-    @DeleteMapping("/delete/{orderId}")
-    ResponseEntity<String> delete(@PathVariable OrderId orderId) {
+    @DeleteMapping("/delete")
+    ResponseEntity<APIResponse<OrderId>> delete(@RequestParam("orderId") OrderId orderId, WebRequest request) {
         orderService.deleteOrder(orderId);
-        return new ResponseEntity<>("Deleted Order: " + orderId.toString(), HttpStatus.OK);
+
+        APIResponse<OrderId> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Order deleted successfully");
+        response.setDetails(orderId);
+        response.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

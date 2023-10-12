@@ -2,6 +2,7 @@ package com.grp7.projectC.model.aggregates;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**

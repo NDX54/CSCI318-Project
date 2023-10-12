@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.grp7.projectC.model.aggregates.CustomerId;
+import com.grp7.projectC.errorhandlers.InsufficientStockException;
+import com.grp7.projectC.errorhandlers.WrongQuantityException;
 import com.grp7.projectC.model.aggregates.OrderAggregate;
 import com.grp7.projectC.model.aggregates.OrderId;
-import com.grp7.projectC.model.aggregates.ProductId;
 import com.grp7.projectC.repository.OrderRepository;
 import com.grp7.projectC.model.events.OrderEvent;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void createOrder(OrderAggregate orderAggregate, CustomerId customerId, ProductId productId) {
+    public OrderAggregate createOrder(OrderAggregate orderAggregate, String customerId, String productId) {
         String random = UUID.randomUUID().toString().toUpperCase();
         String orderIdStr = random.substring(0, random.indexOf("-"));
 
@@ -63,17 +63,18 @@ public class OrderService {
             String productNameFromJson = productJsonNode.get("name").asText();
             Integer productStockFromJson = productJsonNode.get("stock").asInt();
 
-
-            System.out.println(customerIdFromJson);
-            System.out.println(productIdFromJson);
-            System.out.println(productNameFromJson);
-            System.out.println(productStockFromJson);
-
             orderAggregate.setCustomerId(customerIdFromJson);
             orderAggregate.setProductId(productIdFromJson);
             orderAggregate.setProduct(productNameFromJson);
 
             Integer orderQuantity = orderAggregate.getQuantity().getQuantity();
+
+            if (productStockFromJson < orderQuantity) {
+                throw new InsufficientStockException("Insufficient stock");
+            } else if (orderQuantity <= 0) {
+                throw new WrongQuantityException("Quantity must be at least 1");
+            }
+
             ObjectNode updatedProductNode = productJsonNode.deepCopy();
             updatedProductNode.put("stock", productStockFromJson - orderQuantity);
 
@@ -81,8 +82,6 @@ public class OrderService {
             restTemplate.put(productURL + "/update/" + productIdFromJson, updatedProductNode);
 
             orderAggregate.setOrderId(new OrderId(orderIdStr));
-
-            orderRepository.save(orderAggregate);
 
             OrderEvent orderCreatedEvent = new OrderEvent();
 
@@ -97,52 +96,13 @@ public class OrderService {
             applicationEventPublisher.publishEvent(orderCreatedEvent);
 
             logger.info("Order created with ID: {}", orderAggregate.getOrderId());
+
+            return orderRepository.save(orderAggregate);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
 
 
-    }
-
-    @Transactional
-    public void updateOrder(OrderAggregate orderAggregate, OrderId orderId, ProductId productId) {
-
-        final String productURL = "http://localhost:8082/products/get/";
-        ResponseEntity<String> response = restTemplate.getForEntity(productURL + productId, String.class);
-        String productResponse = response.getBody();
-
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode productJsonNode = objectMapper.readTree(productResponse);
-            String productIdFromJson = productJsonNode.get("productId").asText();
-            String productNameFromJson = productJsonNode.get("name").asText();
-
-
-            System.out.println(productIdFromJson);
-            System.out.println(productNameFromJson);
-
-            OrderAggregate existingOrder = orderRepository.findByOrderId(orderId).orElseThrow(EntityNotFoundException::new);
-            existingOrder.setProduct(productNameFromJson);
-            existingOrder.setProductId(productIdFromJson);
-            existingOrder.setSupplier(orderAggregate.getSupplier());
-            existingOrder.setQuantity(orderAggregate.getQuantity());
-
-            orderRepository.save(existingOrder);
-
-            OrderEvent orderUpdatedEvent = new OrderEvent();
-            orderUpdatedEvent.setEventName("Update");
-            orderUpdatedEvent.setCustomerId(existingOrder.getCustomerId());
-            orderUpdatedEvent.setOrderId(existingOrder.getOrderId().toString());
-            orderUpdatedEvent.setProductId(productIdFromJson);
-            orderUpdatedEvent.setSupplier(orderAggregate.getSupplier());
-            orderUpdatedEvent.setProduct(productNameFromJson);
-            orderUpdatedEvent.setQuantity(orderAggregate.getQuantity());
-
-
-            applicationEventPublisher.publishEvent(orderUpdatedEvent);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Transactional
@@ -163,7 +123,6 @@ public class OrderService {
             JsonNode productJsonNode = objectMapper.readTree(productResponse);
             String customerIdFromJson = customerJsonNode.get("customerId").asText();
             String productIdFromJson = productJsonNode.get("productId").asText();
-            String productNameFromJson = productJsonNode.get("name").asText();
             Integer productStockFromJson = productJsonNode.get("stock").asInt();
 
             Integer orderQuantity = orderToDelete.getQuantity().getQuantity();

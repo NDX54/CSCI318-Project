@@ -2,8 +2,7 @@ package com.grp7.projectC.model.event;
 
 import javax.persistence.*;
 @Entity
-@Table(name = "customer_created_event")
-public class CustomerCreatedEvent {
+public class CustomerEvent {
 
     public static final String CUSTOMER_CREATED = "CUSTOMER_CREATED";
     public static final String CUSTOMER_UPDATED = "CUSTOMER_UPDATED";
@@ -22,9 +21,9 @@ public class CustomerCreatedEvent {
     private Integer ordersMade = 0;
     private String eventName;
 
-    public CustomerCreatedEvent() {}
+    public CustomerEvent() {}
 
-    public CustomerCreatedEvent(String customerId, String customerName, String customerEmail, String customerPhoneNumber, Integer ordersMade, String eventName) {
+    public CustomerEvent(String customerId, String customerName, String customerEmail, String customerPhoneNumber, Integer ordersMade, String eventName) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
@@ -99,7 +98,8 @@ public class CustomerCreatedEvent {
 
     @Override
     public String toString() {
-        return "CustomerCreatedEvent{customerId='" + customerId + '\'' +
+        return "CustomerEvent{eventName='" + eventName + '\'' +
+                ", customerId='" + customerId + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
                 ", customerPhoneNumber='" + customerPhoneNumber + '\'' +

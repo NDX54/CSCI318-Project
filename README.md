@@ -86,31 +86,41 @@ CustomerID, ProductID, and OrderID are randomly generated. Please copy the respe
 curl -X POST -H "Content-Type: application/json" -d "{\"companyName\": \"Example Company\",\"address\": {\"streetAddress\": \"123 Main Street\",\"city\": \"Cityville\",\"postalCode\": \"12345\",\"country\": \"Countryland\"},\"email\": {\"address\":\"customer@example.com\"},\"number\":\"123-456-7890\"}" http://localhost:8081/customers
 ```
 
-### Create a Contact
-
-```shell
-curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"John Doe\", \"email\": \"john.doe@example.com\", \"phone\": \"999-999-9999\", \"position\": \"Manager\"}" http://localhost:8081/contacts/?customerId=CUSTOMER_ID_HERE
-```
-
 ### Update a Customer
 
 ```shell
-curl -X PUT -H "Content-Type: application/json" -d "{\"companyName\": \"Example Company\",\"address\": {\"streetAddress\": \"123 Main Street\",\"city\": \"Cityville\",\"postalCode\": \"12345\",\"country\": \"Countryland\"},\"email\": {\"address\":\"customer@example.com\"},\"number\": \"123-456-7890\"}" http://localhost:8081/customers/update/CUSTOMER_ID_HERE
+curl -X PUT -H "Content-Type: application/json" -d "{\"companyName\": \"Com2\",\"address\": {\"streetAddress\": \"1 Street\",\"city\": \"Cile\",\"postalCode\": \"144\",\"country\": \"Couand\"},\"email\": {\"address\":\"custr@emple.com\"},\"number\": \"156-890\"}" http://localhost:8081/customers/update/CUSTOMER_ID_HERE
+```
+
+### Create a Contact
+
+```shell
+curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"John Doe\", \"email\": \"john.doe@example.com\", \"phone\": \"999-999-9999\", \"position\": \"Manager\"}" http://localhost:8081/contacts?customerId=CUSTOMER_ID_HERE
 ```
 
 ### Update a Contact
 
-~~For updating the contact, use the Long ID for both CustomerID~~ and ContactID.
+~~For updating the contact, use the Long ID for both CustomerID and ContactID.~~
 
-You can now use the randomly generated CustomerID to update the contact. You still need to use the Long ID for ContactID.
+You can now use the randomly generated CustomerID and ContactID to update the contact.
+```shell
+curl -X PUT -H "Content-Type: application/json" -d "{\"name\": \"Mari Doe\", \"email\": \"mardoe@example.com\", \"phone\": \"992349523952539\", \"position\": \"Doggerr\"}" http://localhost:8081/contacts/update/CONTACT_ID_TO_UPDATE_HERE/?customerId=CUSTOMER_ID_HERE
+```
+
+### Delete a Contact
+```shell
+curl -X DELETE http://localhost:8081/contacts/delete/CONTACT_ID_TO_DELETE_HERE
+```
+
+### View All Customers
 
 ```shell
-curl -X PUT -H "Content-Type: application/json" -d "{\"name\": \"Mari Doe\", \"email\": \"mardoe@example.com\", \"phone\": \"992349523952539\", \"position\": \"Doggerr\"}" http://localhost:8081/customers/CUSTOMER_ID_HERE/contacts/CONTACT_ID_HERE
+curl http://localhost:8081/customers
 ```
 
-### View Customers
+### View a Particular Customer
 
-```
+```shell
 curl http://localhost:8081/customers/CUSTOMER_ID_TO_LOOKUP_HERE
 ```
 
@@ -126,8 +136,8 @@ curl -X POST -H "Content-Type: application/json" -d "{\"description\":\"XLR Micr
 ### Update a Product
 
 ```shell
-curl -X PUT -H "Content-Type: application/json" -d "{\"productCategory\":\"Tools\",\"name\":\"Drill\",\"price\":339.99,\"stock\":350}" http://localhost:8082/products/update/PRODUCT_ID_TO_UPDATE_HERE
-curl -X PUT -H "Content-Type: application/json" -d "{\"description\":\"High-quality drill\",\"comment\":\"Drill it in\",\"productCategory\":\"Tools\",\"name\":\"Drill\",\"price\":339.99,\"stock\":200}" http://localhost:8082/products/PRODUCT_ID_TO_UPDATE_HERE
+curl -X PUT -H "Content-Type: application/json" -d "{\"comment\":\"App\",\"description\":\"good micro\",\"productCategory\":\"Appliances\",\"name\":\"Microwave\",\"price\":159.99,\"stock\":200}"  http://localhost:8082/products/update/PRODUCT_ID_TO_UPDATE_HERE
+curl -X PUT -H "Content-Type: application/json" -d "{\"description\":\"High-quality drill\",\"comment\":\"Drill it in\",\"productCategory\":\"Tools\",\"name\":\"Drill\",\"price\":339.99,\"stock\":200}" http://localhost:8082/products/update/PRODUCT_ID_TO_UPDATE_HERE
 ```
 
 ### Delete a Product
@@ -152,24 +162,30 @@ curl http://localhost:8082/products/get/PRODUCT_ID_TO_LOOKUP_HERE
 
 ### Create Order
 
-```shell
-curl -X POST -H "Content-Type: application/json" -d "{\"supplier\":\"Drill it in\",\"quantity\":300}" http://localhost:8089/sales/create-order/CUSTOMER_ID_HERE/PRODUCT_ID_HERE
-```
-
-### Update Order
+#### Windows
 
 ```shell
-CURL -X PUT -H "Content-Type: application/json" -d "{\"supplier\":\"Cereal Killers\",\"quantity\":300}" http://localhost:8089/sales/update-order/ORDER_ID_HERE/product-id/NEW_PRODUCT_ID_HERE
+curl -X POST -H "Content-Type: application/json" -d "{\"supplier\":\"Drill it in\",\"quantity\":100}" http://localhost:8089/sales/create-order\?customerId=CUSTOMER_ID_HERE\&productId=PRODUCT_ID_HERE
 ```
+
+### ~~Update Order~~
+
+Update order is deleted.
 
 ### Delete Order
 
 ```shell
-curl -X DELETE http://localhost:8089/sales/delete/ORDER_ID_TO_DELETE_HERE
+curl -X DELETE http://localhost:8089/sales/delete\?orderId=ORDER_ID_HERE
 ```
 
 ### Lookup All Orders
 
 ```shell
-curl -X GET http://localhost:8089
+curl -X GET http://localhost:8089/sales
+```
+
+### Lookup Specific Order
+
+```shell
+curl -X GET http://localhost:8089/sales/get\?orderId=ORDER_ID_HERE
 ```

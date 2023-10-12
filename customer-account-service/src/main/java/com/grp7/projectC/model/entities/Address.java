@@ -2,20 +2,25 @@ package com.grp7.projectC.model.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 @Embeddable
 public class Address {
 
     @Column(name = "street_address")
+    @NotBlank(message = "Address must not be blank")
     private String streetAddress;
 
     @Column(name = "city")
+    @NotBlank(message = "City must not be blank")
     private String city;
 
     @Column(name = "postal_code")
+    @NotBlank(message = "Postal code must not be blank")
     private String postalCode;
 
     @Column(name = "country")
+    @NotBlank(message = "Country must not be blank")
     private String country;
 
     public Address() {

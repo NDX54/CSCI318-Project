@@ -1,10 +1,12 @@
 package com.grp7.projectC.model.valueobjects;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 @Embeddable
 public class ProductCategory {
 
+    @NotBlank(message = "Product category must not be blank")
     private String productCategory;
 
     public ProductCategory() {}

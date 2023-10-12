@@ -1,37 +1,57 @@
 server.port: 8788
-spring.cloud.stream.bindings:
-  processOrderCreation-in-0:
-    destination: customerUpdates
-  orderCreationChannel:
-    destination: orderCreations
-  orderDeletionChannel:
-    destination: orderDeletions
-  customerCreationChannel:
-    destination: customerCreations
-  customerUpdateChannel:
-    destination: customerUpdates
-  customerDeletionChannel:
-    destination: customerDeletions
+spring:
+  cloud:
+    stream:
+      function:
+        definition:
+          processOrderCreation;processProductUpdate
+      bindings:
+        processOrderCreation-in-0:
+          destination: customerUpdates
+        processProductUpdate-in-1:
+          destination: productUpdates
+        orderCreationChannel:
+          destination: orderCreations
+        orderDeletionChannel:
+          destination: orderDeletions
+        customerCreationChannel:
+          destination: customerCreations
+        customerUpdateChannel:
+          destination: customerUpdates
+        customerDeletionChannel:
+          destination: customerDeletions
 
-  contactCreationChannel:
-    destination: contactCreations
-  contactUpdateChannel:
-    destination: contactUpdates
-  contactDeletionChannel:
-    destination: contactDeletions
+        contactCreationChannel:
+          destination: contactCreations
+        contactUpdateChannel:
+          destination: contactUpdates
+        contactDeletionChannel:
+          destination: contactDeletions
 
-  productCreationChannel:
-    destination: productCreations
-  productUpdateChannel:
-    destination: productUpdates
-  productDeletionChannel:
-    destination: productDeletions
+        productCreationChannel:
+          destination: productCreations
+        productUpdateChannel:
+          destination: productUpdates
+        productDeletionChannel:
+          destination: productDeletions
+      kafka:
+        streams:
+          binder:
+            brokers: localhost:9092
+            serdeError: logAndContinue
+            configuration:
+              commit.interval.ms: 500
+              default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+              default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+          bindings:
+            processOrderCreation-in-0:
+              consumer:
+                valueSerde: org.springframework.kafka.support.serializer.JsonSerde
+                configuration:
+                  spring.json.value.default.type: com.grp7.projectC.applicationservice.dto.CustomerEventDTO
+            processProductUpdate-in-1:
+              consumer:
+                valueSerde: org.springframework.kafka.support.serializer.JsonSerde
+                configuration:
+                  spring.json.value.default.type: com.grp7.projectC.applicationservice.dto.ProductEventDTO
 
-spring.cloud.stream.kafka.streams.binder:
-  brokers: localhost:9092
-  serdeError: logAndContinue
-  configuration:
-    commit.interval.ms: 500
-    default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-    default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
-    spring.json.value.default.type: com.grp7.projectC.applicationservice.dto.CustomerEventDTO

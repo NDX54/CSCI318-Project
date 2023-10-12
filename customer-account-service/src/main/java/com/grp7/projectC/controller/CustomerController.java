@@ -1,14 +1,21 @@
 package com.grp7.projectC.controller;
 
+import com.grp7.projectC.customresponses.APIResponse;
+import com.grp7.projectC.errorhandlers.CustomNotFoundException;
 import com.grp7.projectC.model.aggregates.CustomerAggregate;
 import com.grp7.projectC.model.aggregates.CustomerId;
 import com.grp7.projectC.model.entities.Contact;
 import com.grp7.projectC.repository.ContactRepository;
 import com.grp7.projectC.repository.CustomerRepository;
 import com.grp7.projectC.service.ContactService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.grp7.projectC.service.CustomerService;
+import org.springframework.web.context.request.WebRequest;
 
+import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 @RestController
 @RequestMapping("/customers")
@@ -27,87 +34,87 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @GetMapping
+    public List<CustomerAggregate> getAllCustomers() { return customerService.getAllCustomers(); }
+
+    @GetMapping("/{customerId}")
+    public CustomerAggregate getCustomerById(@PathVariable CustomerId customerId) { return customerService.findCustomer(customerId);}
+
     @PostMapping
-    public void createCustomer(@RequestBody CustomerAggregate customerAggregate) {
+    public ResponseEntity<APIResponse<CustomerAggregate>> createCustomer(@Valid @RequestBody CustomerAggregate customerAggregate, WebRequest request) {
         // CustomerAggregate에서 필요한 정보를 추출하거나 매핑하여 Customer 엔터티를 생성하고 저장합니다.
-        customerService.createCustomer(customerAggregate);
+        CustomerAggregate newCustomer = customerService.createCustomer(customerAggregate);
 
         // Contact 엔터티에 연결된 Customer 정보를 설정하고 저장합니다.
         for (Contact contact : customerAggregate.getContacts()) {
             contact.setCustomer(customerAggregate);
             contactRepository.save(contact);
         }
+
+        APIResponse<CustomerAggregate> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Customer created successfully");
+        response.setDetails(newCustomer);
+        response.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/update/{customerId}")
-    public void updateCustomer(@PathVariable CustomerId customerId, @RequestBody CustomerAggregate updatedCustomerAggregate) {
-        customerService.updateCustomer(customerId, updatedCustomerAggregate);
-//        CustomerAggregate existingCustomerAggregate = customerRepository.findByCustomerId(customerId)
-//                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    public ResponseEntity<APIResponse<CustomerAggregate>> updateCustomer(@PathVariable CustomerId customerId, @Valid @RequestBody CustomerAggregate updatedCustomerAggregate, WebRequest request) {
+        CustomerAggregate updatedCustomer = customerService.updateCustomer(customerId, updatedCustomerAggregate);
 
-        // 본문에서 필요한 로직을 추가하세요.
+        APIResponse<CustomerAggregate> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Customer updated successfully");
+        response.setDetails(updatedCustomer);
+        response.setPath(request.getDescription(false));
 
-        // 예시: 본문에서 필요한 로직을 추가한 예시
-//        existingCustomerAggregate.setCompanyName(updatedCustomerAggregate.getCompanyName());
-//        existingCustomerAggregate.setAddress(updatedCustomerAggregate.getAddress());
-        // ...
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-        // Contact 엔터티를 업데이트합니다.
-//        for (Contact updatedContact : updatedCustomerAggregate.getContacts()) {
-//            Contact existingContact = contactRepository.findById(updatedContact.getId()).orElseThrow();
-//            existingContact.setName(updatedContact.getName());
-//            existingContact.setPhone(updatedContact.getPhone());
-//            existingContact.setEmail(updatedContact.getEmail());
-//            existingContact.setPosition(updatedContact.getPosition());
-//            contactRepository.save(existingContact);
-//        }
+    @DeleteMapping ("/delete/{customerId}")
+    public ResponseEntity<APIResponse<CustomerId>> deleteCustomer(@PathVariable CustomerId customerId, WebRequest request) {
+        customerService.deleteCustomer(customerId);
 
-//        return customerRepository.save(existingCustomerAggregate);
+        APIResponse<CustomerId> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Customer deleted successfully");
+        response.setDetails(customerId);
+        response.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/add-order-made-number/{customerId}")
-    public void addOrderMadeNumber(@PathVariable CustomerId customerId) {
-        customerService.addCustomerOrderNumber(customerId);
+    public ResponseEntity<APIResponse<CustomerAggregate>> addOrderMadeNumber(@PathVariable CustomerId customerId, WebRequest request) {
+        CustomerAggregate updatedCustomer = customerService.addCustomerOrderNumber(customerId);
+
+        APIResponse<CustomerAggregate> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Number of order incremented for customer");
+        response.setDetails(updatedCustomer);
+        response.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/subtract-order-made-number/{customerId}")
-    public void subtractOrderMadeNumber(@PathVariable CustomerId customerId) {
-        customerService.subtractCustomerOrderNumber(customerId);
+    public ResponseEntity<APIResponse<CustomerAggregate>> subtractOrderMadeNumber(@PathVariable CustomerId customerId, WebRequest request) {
+        CustomerAggregate updatedCustomer = customerService.subtractCustomerOrderNumber(customerId);
+
+        APIResponse<CustomerAggregate> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Number of order decremented for customer");
+        response.setDetails(updatedCustomer);
+        response.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-    @PostMapping("/{customerId}/contacts")
-    public Contact createCustomerContact(@PathVariable Long customerId, @RequestBody Contact contact) {
-        CustomerAggregate customerAggregate = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-
-        // 중복된 연락처 검사
-        boolean contactExists = customerAggregate.getContacts().stream()
-                .anyMatch(existingContact -> existingContact.getEmail().equals(contact.getEmail()));
-
-        if (contactExists) {
-            throw new RuntimeException("Contact already exists");
-        }
-
-        contact.setCustomer(customerAggregate);  // 연락처 정보와 고객 정보 연결
-        customerAggregate.addContact(contact);
-
-        return contact;
-    }
-
-    @PutMapping("/{customerId}/contacts/{contactId}")
-    public void updateCustomerContact(
-            @PathVariable CustomerId customerId,
-            @PathVariable Long contactId,
-            @RequestBody Contact updatedContact
-    ) {
-
-        customerService.updateCustomerContact(customerId,contactId,updatedContact);
-    }
-
-    @GetMapping
-    public List<CustomerAggregate> getAllCustomers() { return customerService.getAllCustomers(); }
-
-    @GetMapping("/{customerId}")
-    public CustomerAggregate getCustomerById(@PathVariable CustomerId customerId) { return customerService.findCustomer(customerId);}
 }

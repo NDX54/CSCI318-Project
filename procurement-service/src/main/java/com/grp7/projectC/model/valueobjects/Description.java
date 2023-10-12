@@ -1,10 +1,12 @@
 package com.grp7.projectC.model.valueobjects;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 @Embeddable
 public class Description {
 
+    @NotBlank(message = "Description must not be blank")
     private String description;
 
     public Description() {}

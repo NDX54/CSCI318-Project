@@ -1,10 +1,11 @@
 package com.grp7.projectC.model.aggregates;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class OrderId {
+public class OrderId implements Serializable {
 
     private String orderId;
 

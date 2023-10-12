@@ -3,24 +3,27 @@ package com.grp7.projectC.model.aggregates;
 import com.grp7.projectC.model.valueobjects.Quantity;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class OrderAggregate {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @EmbeddedId
     @Column
     private OrderId orderId; // Unique identifier for the OrderAggregate
 
     @Column
+    @NotNull
     private String customerId;
 
     @Column
+    @NotNull
     private String productId;
 
     @Column
+    @NotBlank(message = "Supplier must not be left blank")
     private String supplier;
 
     @Column
@@ -40,14 +43,6 @@ public class OrderAggregate {
         this.supplier = supplier;
         this.product = product;
         this.quantity = quantity;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public OrderId getOrderId() {
@@ -104,9 +99,9 @@ public class OrderAggregate {
                 "orderId='" + orderId + '\'' +
                 ", productId='" + productId + '\'' +
                 ", customerId='" + customerId + '\'' +
-                ", product='" + product + '\'' +
                 ", supplier=" + supplier + '\'' +
                 ", quantity='" + quantity + '\'' +
                 '}';
     }
+
 }

@@ -1,24 +1,24 @@
-package com.grp7.projectC;
+package com.grp7.projectC.customresponses;
 
 import java.time.LocalDateTime;
 
-public class CustomErrorResponse {
+public class APIResponse<T> {
     private LocalDateTime timestamp;
 
     private int status;
-
-    private String error;
 
     private String message;
 
     private String path;
 
-    public CustomErrorResponse() {}
+    private T details;
 
-    public CustomErrorResponse(LocalDateTime timestamp, int status, String error, String message, String path) {
+    public APIResponse() {}
+
+    public APIResponse(LocalDateTime timestamp, int status, T details, String message, String path) {
         this.timestamp = timestamp;
         this.status = status;
-        this.error = error;
+        this.details = details;
         this.message = message;
         this.path = path;
     }
@@ -31,9 +31,9 @@ public class CustomErrorResponse {
 
     public void setStatus(int status) { this.status = status; }
 
-    public String getError() { return error; }
+    public T getDetails() { return details; }
 
-    public void setError(String error) { this.error = error; }
+    public void setDetails(T details) { this.details = details; }
 
     public String getMessage() { return message; }
 
@@ -42,4 +42,5 @@ public class CustomErrorResponse {
     public String getPath() { return path; }
 
     public void setPath(String path) { this.path = path; }
+
 }

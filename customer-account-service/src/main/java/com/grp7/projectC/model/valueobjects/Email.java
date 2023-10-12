@@ -1,10 +1,12 @@
 package com.grp7.projectC.model.valueobjects;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 @Embeddable
 public class Email {
 
+    @NotBlank(message = "E-Mail address must not be blank")
     private String address;
 
     // Constructors, getters, and setters

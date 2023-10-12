@@ -1,6 +1,6 @@
 package com.grp7.projectC.service;
 
-import com.grp7.projectC.NotFoundException;
+import com.grp7.projectC.errorhandlers.CustomNotFoundException;
 import com.grp7.projectC.model.aggregates.ProductAggregate;
 import com.grp7.projectC.model.aggregates.ProductId;
 import com.grp7.projectC.model.events.ProductEvent;
@@ -27,15 +27,15 @@ public class ProductService {
 
     public List<ProductAggregate> getAllProducts() { return productRepository.findAll(); }
 
-    public ProductAggregate getProduct(ProductId productId) { return productRepository.findByProductId(productId).orElseThrow(() -> new NotFoundException("Product not found")); }
+    public ProductAggregate getProduct(ProductId productId) { return productRepository.findByProductId(productId).orElseThrow(() -> new CustomNotFoundException("Product not found")); }
     @Transactional
-    public void createProduct(ProductAggregate newProductAggregate) {
+    public ProductAggregate createProduct(ProductAggregate newProductAggregate) {
 
         String random = UUID.randomUUID().toString().toUpperCase();
         String productIdStr = random.substring(0, random.indexOf("-"));
         newProductAggregate.setProductId(new ProductId(productIdStr));
 
-        productRepository.save(newProductAggregate);
+//        productRepository.save(newProductAggregate);
 
 
         ProductEvent productEvent = new ProductEvent();
@@ -51,19 +51,18 @@ public class ProductService {
 
         applicationEventPublisher.publishEvent(productEvent);
 
+        return productRepository.save(newProductAggregate);
     }
 
     @Transactional
-    public void updateProduct(ProductId productId, ProductAggregate productAggregate) {
-        ProductAggregate existingProductAggregate = productRepository.findByProductId(productId).orElseThrow(() -> new NotFoundException("Product not found"));
+    public ProductAggregate updateProduct(ProductId productId, ProductAggregate productAggregate) {
+        ProductAggregate existingProductAggregate = productRepository.findByProductId(productId).orElseThrow(() -> new CustomNotFoundException("Product not found"));
         existingProductAggregate.setProductCategory(productAggregate.getProductCategory());
         existingProductAggregate.setName(productAggregate.getName());
         existingProductAggregate.setPrice(productAggregate.getPrice());
         existingProductAggregate.setDescription(productAggregate.getDescription());
         existingProductAggregate.setComment(productAggregate.getComment());
         existingProductAggregate.setStock(productAggregate.getStock());
-
-        productRepository.save(existingProductAggregate);
 
 
         ProductEvent productEvent = new ProductEvent();
@@ -78,11 +77,13 @@ public class ProductService {
         productEvent.setStock(productAggregate.getStock());
 
         applicationEventPublisher.publishEvent(productEvent);
+
+        return productRepository.save(existingProductAggregate);
     }
 
     @Transactional
     public void deleteProduct(ProductId productId) {
-        ProductAggregate productToDelete = productRepository.findByProductId(productId).orElseThrow(() -> new NotFoundException("Product not found"));
+        ProductAggregate productToDelete = productRepository.findByProductId(productId).orElseThrow(() -> new CustomNotFoundException("Product not found"));
 
         ProductEvent productEvent = new ProductEvent();
 
@@ -98,7 +99,6 @@ public class ProductService {
         applicationEventPublisher.publishEvent(productEvent);
 
         productRepository.deleteByProductId(productId);
-
     }
 
 }

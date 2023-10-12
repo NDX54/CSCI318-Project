@@ -5,6 +5,7 @@ public class OrderEventDTO {
     private String eventName;
     private String orderId;
     private String customerId;
+    private String productId;
     private String supplier;
     private String product;
     private Integer quantity;
@@ -13,10 +14,11 @@ public class OrderEventDTO {
     public OrderEventDTO() {
     }
 
-    public OrderEventDTO(String eventName, String orderId, String customerId, String supplier, String product, Integer quantity) {
+    public OrderEventDTO(String eventName, String orderId, String customerId, String productId, String supplier, String product, Integer quantity) {
         this.eventName = eventName;
         this.orderId = orderId;
         this.customerId = customerId;
+        this.productId = productId;
         this.supplier = supplier;
         this.product = product;
         this.quantity = quantity;
@@ -34,6 +36,14 @@ public class OrderEventDTO {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getCustomerId() {
@@ -74,6 +84,8 @@ public class OrderEventDTO {
                 "eventName='" + eventName + '\'' +
                 ", orderId='" + orderId + '\'' +
                 ", customerId='" + customerId + '\'' +
+                ", productId='" + productId + '\'' +
+                ", productName='" + product + '\'' +
                 ", supplier=" + supplier +
                 ", quantity='" + quantity + '\'' +
                 '}';

@@ -5,46 +5,56 @@ import com.grp7.projectC.model.valueobjects.*;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class ProductAggregate extends AbstractAggregateRoot<ProductAggregate> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
-    @Embedded
+    @EmbeddedId
     @Column(name = "product_id", unique = true, updatable = false)
     @JsonUnwrapped
     private ProductId productId;
 
     @Embedded
     @Column(name = "product_category", unique = false, updatable = true)
+    @Valid
     @JsonUnwrapped
     private ProductCategory productCategory;
 
     @Embedded
     @Column(name = "name", unique = false, updatable = true)
+    @Valid
     @JsonUnwrapped
     private Name name;
 
     @Embedded
     @Column(name = "price", unique = false, updatable = true)
+    @Valid
     @JsonUnwrapped
     private Price price;
 
     @Embedded
     @Column(name = "description", unique = false, updatable = true)
+    @Valid
     @JsonUnwrapped
     private Description description;
 
     @Embedded
     @Column(name = "comment", unique = false, updatable = true)
+    @Valid
     @JsonUnwrapped
     private Comment comment;
 
     @Embedded
     @Column(name = "stock_remaining", unique = false, updatable = true)
+    @Valid
     @JsonUnwrapped
     private Stock stock;
 

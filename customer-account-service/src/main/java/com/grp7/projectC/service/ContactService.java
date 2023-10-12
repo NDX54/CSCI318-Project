@@ -1,16 +1,18 @@
 package com.grp7.projectC.service;
 
+import com.grp7.projectC.errorhandlers.CustomNotFoundException;
 import com.grp7.projectC.model.aggregates.CustomerId;
+import com.grp7.projectC.model.event.ContactEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.grp7.projectC.model.aggregates.CustomerAggregate;
 import com.grp7.projectC.model.entities.Contact;
 import com.grp7.projectC.repository.CustomerRepository; // 추가
 import com.grp7.projectC.repository.ContactRepository;
-import com.grp7.projectC.model.event.ContactCreatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,72 +38,86 @@ public class ContactService {
         return contactRepository.findAll();
     }
 
-    public Contact getContactById(Long id) {
-        Optional<Contact> optionalContact = contactRepository.findById(id);
+    public Contact getContactByContactId(String contactId) {
+        Optional<Contact> optionalContact = contactRepository.findByContactId(contactId);
         if (optionalContact.isPresent()) {
             return optionalContact.get();
         } else {
-            throw new RuntimeException("Contact not found");
+            throw new CustomNotFoundException("Contact not found");
         }
     }
 
     @Transactional
-    public void createContact(Contact contact, Long customerId) {
+    public Contact createContact(Contact contact, CustomerId customerId) {
         // 연락처(Contact) 객체 생성
         String random = UUID.randomUUID().toString().toUpperCase();
         String contactIdStr = random.substring(0, random.indexOf("-"));
-//        customerAggregate.setCustomerId(new CustomerId(customerIdStr));
-
-        Contact newContact = new Contact();
-        newContact.setName(contact.getName());
-        newContact.setEmail(contact.getEmail());
-        newContact.setPhone(contact.getPhone());
-        newContact.setPosition(contact.getPosition());
+        contact.setContactId(contactIdStr);
 
         // 연관된 고객(Customer) 정보 설정
-        CustomerAggregate customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-        newContact.setCustomer(customer);
+        CustomerAggregate customer = customerRepository.findByCustomerId(customerId)
+                .orElseThrow(() -> new CustomNotFoundException("Customer not found"));
+        contact.setCustomer(customer);
 
-        // 연락처 저장
-        contactRepository.save(newContact);
+
 
         // ContactUpdatedEvent 이벤트 발행
-        ContactCreatedEvent contactCreatedEvent = new ContactCreatedEvent();
-        contactCreatedEvent.setContactId(newContact.getId());
-        contactCreatedEvent.setUpdatedName(newContact.getName());
-        contactCreatedEvent.setUpdatedPhone(newContact.getPhone());
-        contactCreatedEvent.setUpdatedEmail(newContact.getEmail());
-        contactCreatedEvent.setUpdatedPosition(newContact.getPosition());
-        eventPublisher.publishEvent(contactCreatedEvent);
+        ContactEvent contactEvent = new ContactEvent();
+        contactEvent.setEventName(ContactEvent.CONTACT_CREATED);
+        contactEvent.setContactId(contact.getContactId());
+        contactEvent.setName(contact.getName());
+        contactEvent.setPhone(contact.getPhone());
+        contactEvent.setEmail(contact.getEmail());
+        contactEvent.setPosition(contact.getPosition());
+        eventPublisher.publishEvent(contactEvent);
+
+        // 연락처 저장
+        return contactRepository.save(contact);
     }
 
+    @Transactional
+    public Contact updateContact(CustomerId customerId, String contactId, Contact updatedContact) {
+        CustomerAggregate customerAggregate = customerRepository.findByCustomerId(customerId)
+                .orElseThrow(() -> new CustomNotFoundException("Customer not found"));
 
+        // 본문에서 필요한 로직을 추가하세요.
 
-    @Transactional // 트랜잭션 관리를 위한 어노테이션 추가
-    public Contact updateContact(Long id, Contact updatedContact) {
-        if (!contactRepository.existsById(id)) {
-            throw new RuntimeException("Contact not found");
-        }
-        updatedContact.setId(id);
-        Contact savedContact = contactRepository.save(updatedContact);
+        // 예시: 본문에서 필요한 로직을 추가한 예시
+        Contact contactToUpdate = customerAggregate.getContacts().stream()
+                .filter(contact -> Objects.equals(contact.getContactId(), contactId))
+                .findFirst()
+                .orElseThrow(() -> new CustomNotFoundException("Contact not found"));
 
-        // Contact 업데이트 이벤트를 발행합니다.
-        ContactCreatedEvent contactCreatedEvent = new ContactCreatedEvent();
-        contactCreatedEvent.setContactId(savedContact.getId());
-        contactCreatedEvent.setUpdatedName(savedContact.getName());
-        contactCreatedEvent.setUpdatedPhone(savedContact.getPhone());
-        contactCreatedEvent.setUpdatedEmail(savedContact.getEmail());
-        contactCreatedEvent.setUpdatedPosition(savedContact.getPosition());
-        eventPublisher.publishEvent(contactCreatedEvent);
+        contactToUpdate.setName(updatedContact.getName());
+        contactToUpdate.setPhone(updatedContact.getPhone());
+        contactToUpdate.setEmail(updatedContact.getEmail());
+        contactToUpdate.setPosition(updatedContact.getPosition());
 
-        return savedContact;
+        ContactEvent contactUpdatedEvent = new ContactEvent();
+        contactUpdatedEvent.setEventName(ContactEvent.CONTACT_UPDATED);
+        contactUpdatedEvent.setContactId(contactId);
+        contactUpdatedEvent.setName(contactToUpdate.getName());
+        contactUpdatedEvent.setPhone(contactToUpdate.getPhone());
+        contactUpdatedEvent.setEmail(contactToUpdate.getEmail());
+        contactUpdatedEvent.setPosition(contactToUpdate.getPosition());
+
+        eventPublisher.publishEvent(contactUpdatedEvent);
+
+        return contactRepository.save(contactToUpdate);
     }
 
-    public void deleteContact(Long id) {
-        if (!contactRepository.existsById(id)) {
-            throw new RuntimeException("Contact not found");
-        }
-        contactRepository.deleteById(id);
+    public void deleteContact(String contactId) {
+        Contact contactToDelete = contactRepository.findByContactId(contactId).orElseThrow(() -> new CustomNotFoundException("Contact not found"));
+
+        ContactEvent contactEvent = new ContactEvent();
+        contactEvent.setEventName(ContactEvent.CONTACT_DELETED);
+        contactEvent.setContactId(contactToDelete.getContactId());
+        contactEvent.setName(contactToDelete.getName());
+        contactEvent.setPhone(contactToDelete.getPhone());
+        contactEvent.setEmail(contactToDelete.getEmail());
+        contactEvent.setPosition(contactToDelete.getPosition());
+        eventPublisher.publishEvent(contactEvent);
+
+        contactRepository.delete(contactToDelete);
     }
 }

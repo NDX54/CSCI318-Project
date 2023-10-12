@@ -2,13 +2,17 @@ package com.grp7.projectC.controller;
 
 
 
+import com.grp7.projectC.customresponses.APIResponse;
 import com.grp7.projectC.model.aggregates.ProductAggregate;
 import com.grp7.projectC.model.aggregates.ProductId;
 import com.grp7.projectC.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -22,22 +26,45 @@ public class ProcurementController {
     }
 
     @PostMapping
-    ResponseEntity<String> create(@RequestBody ProductAggregate newProductAggregate) {
-        productService.createProduct(newProductAggregate);
-        return new ResponseEntity<>("Created new product: " + newProductAggregate, HttpStatus.OK);
+    ResponseEntity<APIResponse<ProductAggregate>> create(@Valid @RequestBody ProductAggregate newProductAggregate, WebRequest request) {
+        ProductAggregate newProduct = productService.createProduct(newProductAggregate);
+
+        APIResponse<ProductAggregate> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Product created successfully");
+        response.setDetails(newProduct);
+        response.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/update/{productId}")
-    ResponseEntity<String> update(@PathVariable ProductId productId, @RequestBody ProductAggregate productAggregate) {
-        productService.updateProduct(productId, productAggregate);
-        productAggregate.setProductId(productId);
-        return new ResponseEntity<>("Updated product: " + productAggregate, HttpStatus.OK);
+    ResponseEntity<APIResponse<ProductAggregate>> update(@PathVariable ProductId productId, @Valid @RequestBody ProductAggregate productAggregate, WebRequest request) {
+        ProductAggregate updatedProduct = productService.updateProduct(productId, productAggregate);
+
+        APIResponse<ProductAggregate> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Product updated successfully");
+        response.setDetails(updatedProduct);
+        response.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{productId}")
-    ResponseEntity<String>  delete(@PathVariable ProductId productId) {
+    ResponseEntity<APIResponse<ProductId>> delete(@PathVariable ProductId productId, WebRequest request) {
         productService.deleteProduct(productId);
-        return new ResponseEntity<>("Deleted product: " + productId.toString(), HttpStatus.OK);
+
+        APIResponse<ProductId> response = new APIResponse<>();
+        response.setTimestamp(LocalDateTime.now());
+        response.setStatus(HttpStatus.OK.value());
+        response.setMessage("Product deleted successfully");
+        response.setDetails(productId);
+        response.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping

@@ -31,10 +31,10 @@ public class OrderEvent {
     private String productId;
 
     @Column
-    private String supplier;
+    private String product;
 
     @Column
-    private String product;
+    private String supplier;
 
     @Column
     private Quantity quantity;
@@ -51,11 +51,6 @@ public class OrderEvent {
         this.product = product;
         this.quantity = quantity;
     }
-
-    public OrderEvent(OrderId orderId, String supplier, String product, Quantity quantity, OrderAggregate orderAggregate) {
-    }
-
-
 
     public Long getId() {
         return id;

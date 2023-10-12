@@ -33,6 +33,7 @@ public class SalesServiceEventHandler {
                 orderEvent.getEventName(),
                 orderEvent.getOrderId(),
                 orderEvent.getCustomerId(),
+                orderEvent.getProductId(),
                 orderEvent.getSupplier(),
                 orderEvent.getProduct(),
                 orderEvent.getQuantity().getQuantity()
