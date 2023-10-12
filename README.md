@@ -165,7 +165,7 @@ curl http://localhost:8082/products/get/PRODUCT_ID_TO_LOOKUP_HERE
 #### Windows
 
 ```shell
-curl -X POST -H "Content-Type: application/json" -d "{\"supplier\":\"Drill it in\",\"quantity\":100}" http://localhost:8089/sales/create-order\?customerId=CUSTOMER_ID_HERE\&productId=PRODUCT_ID_HERE
+curl -X POST -H "Content-Type: application/json" -d "{\"supplier\":\"Drill it in\",\"quantity\":100}" http://localhost:8089/sales/create-order?customerId=CUSTOMER_ID_HERE\&productId=PRODUCT_ID_HERE
 ```
 
 ### ~~Update Order~~
