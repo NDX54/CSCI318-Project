@@ -76,7 +76,7 @@ c:\kafka\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:909
 ```
 
 ## Note!
-CustomerID, ProductID, and OrderID are randomly generated. Please copy the respective IDs to run the commands!
+CustomerID, ContactID, ProductID, and OrderID are randomly generated. Please copy the respective IDs to run the commands!
 
 ## Customer Account Service
 
