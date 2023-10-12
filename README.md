@@ -175,7 +175,7 @@ Update order is deleted.
 ### Delete Order
 
 ```shell
-curl -X DELETE http://localhost:8089/sales/delete\?orderId=ORDER_ID_HERE
+curl -X DELETE http://localhost:8089/sales/delete?orderId=ORDER_ID_HERE
 ```
 
 ### Lookup All Orders
@@ -187,5 +187,5 @@ curl -X GET http://localhost:8089/sales
 ### Lookup Specific Order
 
 ```shell
-curl -X GET http://localhost:8089/sales/get\?orderId=ORDER_ID_HERE
+curl -X GET http://localhost:8089/sales/get?orderId=ORDER_ID_HERE
 ```
