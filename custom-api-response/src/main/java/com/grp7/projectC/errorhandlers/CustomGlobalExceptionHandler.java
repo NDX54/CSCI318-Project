@@ -1,7 +1,6 @@
 package com.grp7.projectC.errorhandlers;
 
 import com.grp7.projectC.customresponses.APIResponse;
-import com.grp7.projectC.customresponses.CustomErrorResponse;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +17,8 @@ import java.util.Map;
 @ControllerAdvice
 public class CustomGlobalExceptionHandler {
 
-//    @ExceptionHandler(CustomNotFoundException.class)
-//    public ResponseEntity<CustomErrorResponse> customNotFound(CustomNotFoundException exc, WebRequest request) {
-//        CustomErrorResponse error = new CustomErrorResponse();
-//        error.setTimestamp(LocalDateTime.now());
-//        error.setError(exc.getMessage());
-//        error.setStatus(HttpStatus.NOT_FOUND.value());
-//        error.setPath(request.getDescription(false));
-//        error.setMessage("The requested resource was not found.");
-//
-//        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-//    }
-
     @ExceptionHandler(CustomNotFoundException.class)
-    public ResponseEntity<APIResponse<Map<String, String>>> customNotFound(CustomNotFoundException exc, WebRequest request) {
+    public ResponseEntity<APIResponse<Map<String, String>>> handleNotFound(CustomNotFoundException exc, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", exc.getMessage());
 
