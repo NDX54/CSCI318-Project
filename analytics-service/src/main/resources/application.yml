@@ -1,5 +1,10 @@
 server.port: 8788
 spring:
+  web:
+    resources:
+      add-mappings=false:
+  mvc:
+    throw-exception-if-no-handler-found=true:
   cloud:
     stream:
       function:
@@ -54,4 +59,3 @@ spring:
                 valueSerde: org.springframework.kafka.support.serializer.JsonSerde
                 configuration:
                   spring.json.value.default.type: com.grp7.projectC.applicationservice.dto.ProductEventDTO
-

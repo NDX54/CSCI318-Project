@@ -5,10 +5,12 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -98,6 +100,45 @@ public class CustomGlobalExceptionHandler {
         responseError.setPath(request.getDescription(false));
 
         return new ResponseEntity<>(responseError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<APIResponse<String>> handleNoHandlerErrors(NoHandlerFoundException exc, WebRequest request) {
+
+        APIResponse<String> responseError = new APIResponse<>();
+        responseError.setTimestamp(LocalDateTime.now());
+        responseError.setStatus(HttpStatus.NOT_FOUND.value());
+        responseError.setMessage("Endpoint not found");
+        responseError.setDetails(exc.getMessage());
+        responseError.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(responseError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<APIResponse<String>> handleInternalServerError(Exception exc, WebRequest request) {
+
+        APIResponse<String> responseError = new APIResponse<>();
+        responseError.setTimestamp(LocalDateTime.now());
+        responseError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        responseError.setMessage("Error");
+        responseError.setDetails(exc.getMessage());
+        responseError.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(responseError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<APIResponse<String>> handleMethodNotSupportedError(HttpRequestMethodNotSupportedException exc, WebRequest request) {
+
+        APIResponse<String> responseError = new APIResponse<>();
+        responseError.setTimestamp(LocalDateTime.now());
+        responseError.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+        responseError.setMessage("Handle method error");
+        responseError.setDetails(exc.getMessage());
+        responseError.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(responseError, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
 }
