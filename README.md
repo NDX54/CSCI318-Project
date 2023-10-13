@@ -92,6 +92,12 @@ curl -X POST -H "Content-Type: application/json" -d "{\"companyName\": \"Example
 curl -X PUT -H "Content-Type: application/json" -d "{\"companyName\": \"Com2\",\"address\": {\"streetAddress\": \"1 Street\",\"city\": \"Cile\",\"postalCode\": \"144\",\"country\": \"Couand\"},\"email\": {\"address\":\"custr@emple.com\"},\"number\": \"156-890\"}" http://localhost:8081/customers/update/CUSTOMER_ID_HERE
 ```
 
+### Delete a Customer
+
+```shell
+curl -X DELETE http://localhost:8081/customers/delete/CUSTOMER_ID_TO_DELETE_HERE
+```
+
 ### Create a Contact
 
 ```shell
