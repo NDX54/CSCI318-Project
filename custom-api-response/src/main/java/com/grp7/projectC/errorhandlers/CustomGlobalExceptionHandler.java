@@ -121,7 +121,7 @@ public class CustomGlobalExceptionHandler {
         APIResponse<String> responseError = new APIResponse<>();
         responseError.setTimestamp(LocalDateTime.now());
         responseError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        responseError.setMessage("Error");
+        responseError.setMessage("Internal Server Error");
         responseError.setDetails(exc.getMessage());
         responseError.setPath(request.getDescription(false));
 
