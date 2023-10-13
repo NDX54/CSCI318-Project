@@ -106,9 +106,8 @@ curl -X POST -H "Content-Type: application/json" -d "{\"name\": \"John Doe\", \"
 
 ### Update a Contact
 
-~~For updating the contact, use the Long ID for both CustomerID and ContactID.~~
-
 You can now use the randomly generated CustomerID and ContactID to update the contact.
+
 ```shell
 curl -X PUT -H "Content-Type: application/json" -d "{\"name\": \"Mari Doe\", \"email\": \"mardoe@example.com\", \"phone\": \"992349523952539\", \"position\": \"Doggerr\"}" http://localhost:8081/contacts/update/CONTACT_ID_TO_UPDATE_HERE/?customerId=CUSTOMER_ID_HERE
 ```
@@ -173,10 +172,6 @@ curl http://localhost:8082/products/get/PRODUCT_ID_TO_LOOKUP_HERE
 ```shell
 curl -X POST -H "Content-Type: application/json" -d "{\"supplier\":\"Drill it in\",\"quantity\":100}" http://localhost:8089/sales/create-order?customerId=CUSTOMER_ID_HERE\&productId=PRODUCT_ID_HERE
 ```
-
-### ~~Update Order~~
-
-Update order is deleted.
 
 ### Delete Order
 
